@@ -8,7 +8,7 @@
     "build": "npm install"
   },
   "dependencies": {
-    "chokidar": "^3.6.0"
+    "mongoose": "^7.8.6"
   },
   "engines": {
     "node": ">=18.0.0"
