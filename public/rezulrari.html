@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резултати</title>
+    <style>
+        .table-container { max-width: 100%; overflow-x: auto; }
+        .table { width: 100%; border-collapse: collapse; }
+        .table th, .table td { padding: 10px; border: 1px solid #ddd; text-align: center; }
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 2px solid #ddd; z-index: 10; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 5; }
+        button { padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+<div class="popup" id="popup">
+    <h3>Внесете админ лозинка:</h3>
+    <input type="password" id="adminPassword" placeholder="Лозинка">
+    <button onclick="verifyPassword()">Потврди</button>
+</div>
+
+<div id="result"></div>
+<button id="editBtn" style="display: none;" onclick="editData()">Едитирај</button>
+<button id="saveBtn" style="display: none;" onclick="saveData()">Зачувај</button>
+<button id="exportBtn" onclick="exportData()">Извоз во CSV</button>
+
+<script>
+    const adminPassword = 'AssetList01';  // Единствена лозинка за админ
+    let editableData = [];  // Податоци кои ќе се едитираат
+    let dataHistory = [];  // Историја на промените
+
+    // Пример податоци
+    let data = [
+        { category: 'Категорија 1', item: 'Артикал 1', price: 100 },
+        { category: 'Категорија 2', item: 'Артикал 2', price: 150 },
+        { category: '', item: '', price: 0 }  // Празен запис, нема да се прикажува
+    ];
+
+    // Функција за прикажување на резултати во табела
+    function displayData(data) {
+        const result = document.getElementById('result');
+        let tableHtml = '<table class="table"><thead><tr>';
+
+        // Прв ред: Постави ги заглавјата на колоните
+        const columns = Object.keys(data[0]);
+        columns.forEach(col => {
+            // Пропуштање на празни колони
+            if (data.some(row => row[col] !== "")) {
+                tableHtml += `<th>${col}</th>`;
+            }
+        });
+        tableHtml += `<th>Опции</th></tr></thead><tbody>`;
+
+        // Додај податоци во табелата
+        data.forEach((row, index) => {
+            if (Object.values(row).some(value => value !== "")) {  // Проверка за празни редови
+                tableHtml += '<tr>';
+                columns.forEach(col => {
+                    if (row[col] !== "") {
+                        tableHtml += `<td>${row[col]}</td>`;
+                    }
+                });
+                tableHtml += `<td><button onclick="enableEdit(${index})">Едитирај</button></td>`;
+                tableHtml += '</tr>';
+            }
+        });
+
+        tableHtml += '</tbody></table>';
+        result.innerHTML = tableHtml;
+    }
+
+    // Функција за овозможување на едитирање
+    function enableEdit(index) {
+        editableData = [...data];  // Копирање на податоците за едитирање
+        document.getElementById('editBtn').style.display = 'inline-block';
+    }
+
+    // Прикажи поп-ап за внесување лозинка
+    function editData() {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('popup').style.display = 'block';
+    }
+
+    // Потврди лозинка
+    function verifyPassword() {
+        const password = document.getElementById('adminPassword').value;
+        if (password === adminPassword) {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+            // Можеш да додадеш функционалност за едитирање тука
+            alert('Лозинката е точна! Може да започнете со едитирање.');
+        } else {
+            alert('Невалидна лозинка.');
+        }
+    }
+
+    // Зачувај променети податоци
+    function saveData() {
+        // Историја на промените
+        dataHistory.push(JSON.parse(JSON.stringify(data)));  // Чување на моменталната состојба на податоците
+
+        alert('Податоците се зачувани!');
+
+        // Функција за зачувување во CSV:
+        const csvData = convertToCSV(editableData);
+        downloadCSV(csvData);
+    }
+
+    // Конвертирање на податоците во CSV формат
+    function convertToCSV(data) {
+        const headers = Object.keys(data[0]);
+        const rows = data.map(row => headers.map(col => row[col]).join(',')).join('\n');
+        return [headers.join(','), rows].join('\n');
+    }
+
+    // Преземете CSV
+    function downloadCSV(csvData) {
+        const link = document.createElement('a');
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        link.href = URL.createObjectURL(blob);
+        link.download = 'data.csv';
+        link.click();
+    }
+
+    // Извоз на податоци
+    function exportData() {
+        const csvData = convertToCSV(data);
+        downloadCSV(csvData);
+    }
+
+    // Прикажи податоци при учитање на страната
+    window.onload = () => {
+        displayData(data);
+    };
+</script>
+
+</body>
+</html>
