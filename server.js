@@ -24,10 +24,16 @@ const HISTORY_PATH = '\\\\srvaitalkam\\Reporti\\Martin';
 const LOG_FILE_PATH = path.join(__dirname, 'user_activity_log.txt');
 console.log("🔍 MONGO_URI:", process.env.MONGO_URI);
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("✅ Successfully connected to MongoDB Atlas!"))
-    .catch((err) => console.error("❌ MongoDB connection error:", err));
-;
+mongoose.connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+    socketTimeoutMS: 45000, // Increase timeout for socket connections
+    maxPoolSize: 10 // Limit connections to 10 to prevent overload
+}).then(() => {
+    console.log("✅ Successfully connected to MongoDB Atlas!");
+}).catch((err) => {
+    console.error("❌ MongoDB connection error:", err);
+});
+
 
 const ChangeLog = require('./models/ChangeLog'); // Импортирај го моделот за логови
 
@@ -113,6 +119,7 @@ function checkExcelChanges(filePath, fileName) {
         lastKnownState[fileName] = sheetData;
         return;
     }
+console.log("Saving file to:", filePath);
 
     sheetData.forEach((row, rowIndex) => {
         Object.keys(row).forEach(columnName => {
@@ -326,12 +333,15 @@ app.get('/getFiles', async (req, res) => {
             .filter(file => file.endsWith('.xlsx') || file.endsWith('.csv'));
 
         console.log("📂 Фајлови најдени:", files);
-        res.json(files); // ✅ Ensure this line is not missing
+       res.setHeader('Content-Type', 'application/json');
+res.json(files);
+
     } catch (error) {
         console.error('❌ Грешка при вчитување на документи:', error);
         res.status(500).json({ error: 'Грешка при вчитување на документи.' });
     }
 });
+
 
 
 app.get('/details', async (req, res) => {
@@ -504,10 +514,16 @@ app.post('/edit', async (req, res) => {
             return res.status(404).json({ error: 'Фајлот не постои!' });
         }
 
-        // 📌 Читање на Excel фајлот
+        console.log("🔍 Отварам фајл:", filePath);
+
         const workbook = xlsx.readFile(filePath);
+        if (!workbook || !workbook.Sheets) {
+            console.error("❌ Invalid workbook data.");
+            return res.status(500).json({ error: "Workbook error - Invalid file format" });
+        }
+
         const sheetName = workbook.SheetNames[0];
-        const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
+        let sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
 
         if (!sheetData[rowIndex]) {
             return res.status(400).json({ error: "Редицата не постои!" });
@@ -516,17 +532,30 @@ app.post('/edit', async (req, res) => {
         const oldValue = sheetData[rowIndex][columnName];
         sheetData[rowIndex][columnName] = newValue;
 
-        // 📌 Чување на историјата на измени
+        // ✅ Зачувај ја промената во базата
         await saveChangeLog(fileName, rowIndex, columnName, oldValue, newValue, email);
 
-        // ✅ Debug log to see if filePath is correct
-        console.log("🔍 Saving to:", filePath);
-
-        // ✅ Use correct function to write the file
+        // ✅ Конвертирај го назад во Excel
         const newSheet = xlsx.utils.json_to_sheet(sheetData);
         workbook.Sheets[sheetName] = newSheet;
-        
-        xlsx.writeFile(filePath, workbook); // ⚠️ Ensure correct data is being passed
+
+        console.log(`🔍 Saving to: ${filePath}`);
+
+        if (typeof filePath !== "string") {
+            console.error("❌ Грешка: filePath не е валиден текст!", filePath);
+            return res.status(500).json({ error: "Invalid file path" });
+        }
+
+console.log("📁 File path type:", typeof filePath, "| Value:", filePath);
+
+if (typeof filePath !== "string") {
+    console.error("❌ Грешка: filePath не е валиден текст!", filePath);
+    return res.status(500).json({ error: "Invalid file path" });
+}
+
+
+        xlsx.writeFile(filePath.toString(), workbook);
+
 
         console.log(`✅ Excel фајлот успешно ажуриран: ${fileName}`);
         res.json({ success: true, message: "Податоците се ажурирани!" });
@@ -536,6 +565,7 @@ app.post('/edit', async (req, res) => {
         res.status(500).json({ error: "Грешка при зачувување на Excel фајлот!" });
     }
 });
+
 
 
 // ✅ Ensure all API routes are declared before this
