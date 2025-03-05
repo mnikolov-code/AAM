@@ -518,6 +518,8 @@ h1 {
 </div>
 
 
+
+
 <!-- Поп-ап за лозинка -->
 <div id="adminModal" class="modal">
     <div style="position: relative; padding: 20px;">
@@ -875,23 +877,31 @@ async function showHistory(fileName, rowIndex, columnName) {
         const response = await fetch(`/history?fileName=${encodeURIComponent(fileName)}&rowIndex=${rowIndex}&columnName=${encodeURIComponent(columnName)}`);
         const historyData = await response.json();
 
-        let historyContent = "<h3>Историја на измени</h3>";
-        if (historyData.length === 0) {
-            historyContent += "<p>Нема претходни измени.</p>";
-        } else {
-            historyData.forEach(change => {
-                historyContent += `<p><strong>${change.modifiedBy}</strong> ја смени вредноста од "${change.oldValue}" во "${change.newValue}" на ${change.timestamp}</p>`;
-            });
+        const historyContainer = document.getElementById("historyContainer");
+
+        // 🔹 Додади ја оваа проверка пред да се користи historyContainer
+        if (!historyContainer) {
+            console.error("❌ Грешка: 'historyContainer' не постои! Проверете дали има <div id='historyContainer'> во HTML.");
+            return;
         }
 
-        document.getElementById('historyModalContent').innerHTML = historyContent;
-        document.getElementById('historyModal').style.display = 'block';
+        if (historyData.length === 0) {
+            historyContainer.innerHTML = "<p>Нема претходни измени за овој запис.</p>";
+            return;
+        }
+
+        let historyHTML = "<ul>";
+        historyData.forEach(change => {
+            historyHTML += `<li>${change.timestamp} - ${change.modifiedBy}: ${change.oldValue} ➝ ${change.newValue}</li>`;
+        });
+        historyHTML += "</ul>";
+
+        historyContainer.innerHTML = historyHTML;
+        historyContainer.style.display = "block"; // Make sure it's visible
     } catch (error) {
         console.error("❌ Грешка при добивање на историјата:", error);
-        alert("❌ Грешка при добивање на историјата!");
     }
 }
-
 
         document.getElementById('historyModalContent').innerHTML
 
