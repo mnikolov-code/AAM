@@ -1,13 +1,17 @@
 const mongoose = require('mongoose');
+require('dotenv').config(); // Овозможи читање на .env променливи
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log("✅ Successfully connected to MongoDB Atlas!");
+}).catch((err) => {
+  console.error("❌ MongoDB connection error:", err);
+});
+
 const ChangeLog = require('./models/ChangeLog'); // Импортирај го моделот за логови
 
-mongoose.connect('mongodb://localhost:27017/asset_tracking')
-
-    .then(() => console.log("✅ Connected to MongoDB"))
-    .catch(err => console.error("❌ Error connecting to MongoDB:", err));
-
-// ОТСТРАНИЈ ГО ОВОЈ ДВОЕН ИМПОРТ!
-// const ChangeLog = require('./models/ChangeLog'); 
 
 async function saveChangeLog(fileName, rowIndex, columnName, oldValue, newValue, email) {
     const changeLog = new ChangeLog({
