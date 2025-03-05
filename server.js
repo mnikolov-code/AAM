@@ -260,6 +260,10 @@ app.post('/search', async (req, res) => {
                 const sheetName = workbook.SheetNames[0];
                 const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
 
+                sheetData.forEach(row => {
+                    console.log("🔍 Ред во Excel:", row);
+                });
+
                 const filteredData = sheetData.filter(row =>
                     Object.values(row).some(value => value.toString().toLowerCase().includes(query.toLowerCase()))
                 );
@@ -267,21 +271,6 @@ app.post('/search', async (req, res) => {
                 if (filteredData.length > 0) {
                     results.push({ fileName, data: filteredData });
                 }
-            } else if (fileName.endsWith('.csv')) {
-                console.log(`📖 Читам CSV: ${fileName}`);
-                let csvData = [];
-                fs.createReadStream(filePath)
-                    .pipe(csv())
-                    .on('data', (row) => csvData.push(row))
-                    .on('end', () => {
-                        const filteredData = csvData.filter(row =>
-                            Object.values(row).some(value => value.toString().toLowerCase().includes(query.toLowerCase()))
-                        );
-
-                        if (filteredData.length > 0) {
-                            results.push({ fileName, data: filteredData });
-                        }
-                    });
             }
         }
 
@@ -292,6 +281,7 @@ app.post('/search', async (req, res) => {
         res.status(500).json({ error: 'Грешка при пребарување на податоците.' });
     }
 });
+
 
 const getAllFiles = (dirPath, arrayOfFiles) => {
     const files = fs.readdirSync(dirPath);
@@ -336,13 +326,12 @@ app.get('/getFiles', async (req, res) => {
             .filter(file => file.endsWith('.xlsx') || file.endsWith('.csv'));
 
         console.log("📂 Фајлови најдени:", files);
-        res.json(files); // ✅ Make sure this line exists
+        res.json(files); // ✅ Ensure this line is not missing
     } catch (error) {
         console.error('❌ Грешка при вчитување на документи:', error);
         res.status(500).json({ error: 'Грешка при вчитување на документи.' });
     }
 });
-
 
 
 app.get('/details', async (req, res) => {
@@ -530,9 +519,14 @@ app.post('/edit', async (req, res) => {
         // 📌 Чување на историјата на измени
         await saveChangeLog(fileName, rowIndex, columnName, oldValue, newValue, email);
 
-        // 📌 Запиши ги податоците назад во Excel
-        workbook.Sheets[sheetName] = xlsx.utils.json_to_sheet(sheetData);
-        xlsx.writeFile(filePath, workbook);
+        // ✅ Debug log to see if filePath is correct
+        console.log("🔍 Saving to:", filePath);
+
+        // ✅ Use correct function to write the file
+        const newSheet = xlsx.utils.json_to_sheet(sheetData);
+        workbook.Sheets[sheetName] = newSheet;
+        
+        xlsx.writeFile(filePath, workbook); // ⚠️ Ensure correct data is being passed
 
         console.log(`✅ Excel фајлот успешно ажуриран: ${fileName}`);
         res.json({ success: true, message: "Податоците се ажурирани!" });
@@ -542,6 +536,7 @@ app.post('/edit', async (req, res) => {
         res.status(500).json({ error: "Грешка при зачувување на Excel фајлот!" });
     }
 });
+
 
 // ✅ Ensure all API routes are declared before this
 app.use(express.static(path.join(__dirname, 'public')));
