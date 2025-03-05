@@ -4,6 +4,21 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 require('dotenv').config(); // Овозможи читање на .env променливи
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const fs = require('fs');
+const xlsx = require('xlsx');
+const csv = require('csv-parser');
+const ldap = require('ldapjs');
+
+const app = express();
+const PORT = 3000;
+
+// Патеки до фолдерите
+const REPORTS_PATH = '\\\\srvaitalkam\\Reporti';
+const HISTORY_PATH = '\\\\srvaitalkam\\Reporti\\Martin';
+const LOG_FILE_PATH = path.join(__dirname, 'user_activity_log.txt');
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -72,6 +87,7 @@ function watchFiles() {
 // 🔹 Започни го следењето на фајловите
 watchFiles();
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Функција за обработка на измените
 async function processFileChange(filePath) {
@@ -148,21 +164,6 @@ watchFiles();
 
 
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const fs = require('fs');
-const xlsx = require('xlsx');
-const csv = require('csv-parser');
-const ldap = require('ldapjs');
-
-const app = express();
-const PORT = 3000;
-
-// Патеки до фолдерите
-const REPORTS_PATH = '\\\\srvaitalkam\\Reporti';
-const HISTORY_PATH = '\\\\srvaitalkam\\Reporti\\Martin';
-const LOG_FILE_PATH = path.join(__dirname, 'user_activity_log.txt');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
