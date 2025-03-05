@@ -230,8 +230,14 @@ function logActivity(email, action, details) {
 app.post('/search', async (req, res) => {
     try {
         const { query, email, selectedFiles } = req.body;
+        
+        console.log("🔍 Пребарување започнато...");
+        console.log("📨 Query:", query);
+        console.log("📨 Email:", email);
+        console.log("📨 Selected Files:", selectedFiles);
 
         if (!query || !email) {
+            console.log("⚠️ Лоши параметри!");
             return res.status(400).json({ error: 'Мора да внесете критериум за пребарување и да бидете најавени.' });
         }
 
@@ -239,10 +245,10 @@ app.post('/search', async (req, res) => {
 
         let filesToSearch;
         if (selectedFiles && selectedFiles.length > 0) {
-            filesToSearch = selectedFiles; // Пребарувај само во селектираните фајлови
+            filesToSearch = selectedFiles;
         } else {
             filesToSearch = fs.readdirSync(REPORTS_PATH)
-                .filter(file => file.endsWith('.xlsx') || file.endsWith('.csv')); // Ако нема селектирани, користи ги сите
+                .filter(file => file.endsWith('.xlsx') || file.endsWith('.csv'));
         }
 
         console.log("📂 Пребарувам во фајловите:", filesToSearch);
@@ -252,6 +258,7 @@ app.post('/search', async (req, res) => {
             const filePath = path.join(REPORTS_PATH, fileName);
 
             if (fileName.endsWith('.xlsx')) {
+                console.log(`📖 Читам Excel: ${fileName}`);
                 const workbook = xlsx.readFile(filePath);
                 const sheetName = workbook.SheetNames[0];
                 const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
@@ -264,6 +271,7 @@ app.post('/search', async (req, res) => {
                     results.push({ fileName, data: filteredData });
                 }
             } else if (fileName.endsWith('.csv')) {
+                console.log(`📖 Читам CSV: ${fileName}`);
                 let csvData = [];
                 fs.createReadStream(filePath)
                     .pipe(csv())
@@ -280,12 +288,14 @@ app.post('/search', async (req, res) => {
             }
         }
 
-        setTimeout(() => { res.json(results); }, 1000); // Дај му 1 секунда за асинхрона обработка
+        console.log("✅ Пребарување завршено, резултати:", results.length);
+        res.json(results);
     } catch (error) {
         console.error('❌ Грешка при пребарување:', error);
         res.status(500).json({ error: 'Грешка при пребарување на податоците.' });
     }
 });
+
 
 const getAllFiles = (dirPath, arrayOfFiles) => {
     const files = fs.readdirSync(dirPath);
