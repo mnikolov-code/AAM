@@ -1,4 +1,4 @@
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 require('dotenv').config();
@@ -16,6 +16,8 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const ChangeLog = require('./models/ChangeLog'); // Импортирај го моделот за логови
 
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 async function saveChangeLog(fileName, rowIndex, columnName, oldValue, newValue, email) {
     const changeLog = new ChangeLog({
