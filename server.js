@@ -492,32 +492,6 @@ function authenticateUser(email, password, callback) {
 }
 
 
-
-    const username = email.split('@')[0]; // Извлекува "mnikolov" од "mnikolov@alkaloid.com.mk"
-const domainUser = `alkaloidad\\${username}`;
-
-    client.on('error', (err) => {
-        console.error("❌ LDAP Client Error:", err.message);
-        callback(false);
-    });
-
-    try {
-        client.bind(domainUser, password, (err) => {
-            if (err) {
-                console.error("❌ Неуспешна автентикација:", err.message);
-                callback(false);
-            } else {
-                console.log("✅ Успешна најава:", email);
-                callback(true);
-            }
-            client.unbind();
-        });
-    } catch (error) {
-        console.error("❌ Фатена грешка при LDAP поврзување:", error.message);
-        callback(false);
-    }
-}
-
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
