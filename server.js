@@ -455,12 +455,11 @@ app.post('/history', async (req, res) => {
 });
 
 // Функција за автентикација преку Active Directory
-function authenticateUser(email, password, callback) {
-    const client = ldap.createClient(const isLocal = process.env.RENDER === undefined; // Проверува дали се работи на Render или локално
+const isLocal = process.env.RENDER === undefined; // Проверува дали се работи на Render или локално
 
-if (isLocal) {
-    const ldap = require('ldapjs');
-    function authenticateUser(email, password, callback) {
+function authenticateUser(email, password, callback) {
+    if (isLocal) {
+        const ldap = require('ldapjs');
         const client = ldap.createClient({ url: 'ldap://alkaloidad.local' });
 
         const username = email.split('@')[0]; 
@@ -486,15 +485,12 @@ if (isLocal) {
             console.error("❌ Фатена грешка при LDAP поврзување:", error.message);
             callback(false);
         }
-    }
-} else {
-    console.log("⚠️  LDAP е оневозможен на Render!");
-    function authenticateUser(email, password, callback) {
-        console.log("⚠️  Автоматска најава за тестирање на Render!");
-        callback(true); // Автоматски дозволува најава за тестирање на Render
+    } else {
+        console.log("⚠️  LDAP е оневозможен на Render!");
+        callback(true); // ✅ Автоматски дозволува најава на Render без LDAP
     }
 }
-;
+
 
     const username = email.split('@')[0]; // Извлекува "mnikolov" од "mnikolov@alkaloid.com.mk"
 const domainUser = `alkaloidad\\${username}`;
