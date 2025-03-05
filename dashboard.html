@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ Контрола</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            margin: 50px auto;
+            padding: 20px;
+            width: 60%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .exit-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .exit-btn:hover {
+            background-color: #b02a37;
+        }
+    </style>
+</head>
+<body onload="checkAdminLogin()">
+    <div class="container">
+        <h2>Админ Панел</h2>
+        <p>Добредојдовте во админ панелот. Тука можете да ги прегледате и уредувате податоците.</p>
+        <button class="exit-btn" onclick="logoutAdmin()">Одјави се</button>
+    </div>
+
+    <script>
+        function checkAdminLogin() {
+            if (localStorage.getItem("isAdmin") !== "true") {
+                window.location.href = "admin.html"; // Ако не е најавен, врати го назад
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem("isAdmin");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

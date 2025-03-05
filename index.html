@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            margin: 50px auto;
+			text-align: center;
+            padding: 20px;
+            width: 40%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #323481;
+            color: white;
+        }
+        td {
+            background-color: #F2F0DF;
+        }
+        .button {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .history-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .edit-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .print-btn {
+            background-color: #ff9800;
+            color: white;
+        }
+        .modal {
+    display: none; 
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #888;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999; 
+    width: 50%;
+    max-width: 600px;
+    text-align: left; 
+	  max-height: 80%; 
+    overflow-y: auto; 
+}
+
+.close-btn {
+    font-size: 24px;
+    cursor: pointer;
+    color: red;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+        }
+        h2 {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .record {
+            padding: 10px;
+            background-color: #F2F0DF;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .record-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #loginModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85%;
+    background: #f2f1ef;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    z-index: 999;
+    background-image: url('https://1.bp.blogspot.com/-MyRKRDqfQ9k/Ur7pA019jhI/AAAAAAAAABY/7IfGY-nIYxk/s1600/20121711-alkaloid.jpg');
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: 100px; 
+}
+
+
+        #loginModal div {
+            background: #f2f1ef;
+            padding: 1px;
+            border-radius: 10000px;
+            text-align: center;
+            min-width: 100px;
+            box-shadow: #0c2c68;
+        }
+		
+		@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#logo {
+    position: fixed; 
+    top: 10px; 
+    left: 10px; 
+    width: 100px; 
+    height: auto; 
+    z-index: 1000; 
+}
+
+
+h1 {
+    color: #0c2c68;
+}
+
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    background-color: #b02a37;
+}
+
+#adminModal {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    width: 50%; /* Постави помала ширина */
+    text-align: center;
+	height: 50%;
+}
+
+#adminModal input {
+    width: 80%; /* Намалена ширина на полето за лозинка */
+    padding: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center; /* Центрирај го текстот во полето */
+}
+
+#adminModal button {
+    width: 50%; /* Намали го копчето */
+    padding: 8px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#adminModal button:hover {
+    background-color: #0056b3;
+}
+
+
+#logsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#logsTable th, #logsTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#logsTable th {
+    background-color: #323481;
+    color: white;
+}
+
+.exit-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.exit-btn:hover {
+    background-color: #b02a37;
+}
+
+.export-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.export-btn:hover {
+    background-color: #218838;
+}
+
+#dateFilterContainer {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    gap: 10px; 
+    margin-bottom: 10px;
+    width: 100%; 
+}
+
+#searchQuery {
+    width: 50%; 
+    max-width: 40%; 
+    padding: 10px; 
+    border-radius: 10px;
+}
+
+
+#detailsModal {
+    display: none; /* Скриј го по умолчување */
+    position: fixed;
+    z-index: 1000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Центрирај го поп-ап прозорецот */
+    width: 60%; /* Големина на прозорецот */
+    max-width: 700px; /* Ограничување на максималната ширина */
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #888;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    text-align: left; /* За да текстот биде лево поравнат */
+    overflow-y: auto; /* За да можеш да скролаш ако има многу текст */
+}
+
+/* Стил за копчето за затворање */
+#detailsModal .close-btn {
+    font-size: 24px;
+    color: red;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px gray;
+    z-index: 1000;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    width: 200px;
+}
+
+.suggestions div {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.suggestions div:hover {
+    background: #ddd;
+}
+
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    width: 200px;
+    z-index: 1000;
+}
+
+.suggestions div {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.suggestions div:hover {
+    background: #ddd;
+}
+
+#selectedFilesContainer {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    max-width: 400px;
+    min-height: 40px;
+}
+
+.selected-file {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background: #f2f2f2;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.selected-file button {
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 2px 6px;
+}
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+/* Прв ред - Пребарување документи (лево) и листа на избрани документи (десно) */
+.search-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    max-width: 800px;
+}
+
+.left {
+    flex: 1;
+    text-align: left;
+}
+
+.right {
+    flex: 1;
+    text-align: right;
+}
+
+/* Намалено поле за пребарување */
+#typeSearch {
+    width: 250px;
+    padding: 8px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+/* Кутија за избрани документи (десно) */
+#selectedFilesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 300px;
+    max-width: 350px;
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.search-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.search-button-container .button {
+    width: 120%;
+    max-width: 900px; 
+    padding: 12px; 
+    font-size: 16px; 
+}
+
+
+#searchQuery {
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+
+.selected-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px;
+    background: #f2f2f2;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+
+
+    </style>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+	
+	<!-- Bootstrap 5 CDN -->
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	
+</head>
+
+<body onload="checkLogin()">
+
+<img id="logo" src="https://1.bp.blogspot.com/-MyRKRDqfQ9k/Ur7pA019jhI/AAAAAAAAABY/7IfGY-nIYxk/s1600/20121711-alkaloid.jpg" 
+     alt="Company Logo" onclick="openAdminModal()">
+
+
+<!-- 🔒 Поп-ап за најава -->
+<div id="loginModal" class="modal">
+    <div>
+        <h2>Најава <BR> Asset Lists </h2>
+        <input type="text" id="loginEmail" placeholder="Е-маил">
+        <input type="password" id="loginPassword" placeholder="Лозинка">
+		<BR>
+        <button onclick="confirmLogin()"><B>Најави се</B></button>
+        <p id="loginError" style="color: red; display: none;">Невалиден емаил или лозинка!</p>
+    </div>
+</div>
+
+<!-- Главна содржина -->
+<div id="mainContent" style="display: none;">
+
+<div id="historyContainer" class="container" style="display: none; padding: 20px; margin-top: 20px;">
+    <h2>Историја на промени</h2>
+    <div id="historyContent"></div>
+</div>
+
+
+<!-- Поп-ап за лозинка -->
+<div id="adminModal" class="modal">
+    <div style="position: relative; padding: 20px;">
+        <span class="close-btn" onclick="closeAdminModal()">&times;</span>
+        <h2>Администраторска најава</h2>
+        <input type="password" id="adminPassword" placeholder="Внеси лозинка">
+        <button onclick="verifyAdminPassword()">Влези</button>
+        <p id="adminError" style="color: red; display: none;">Неточна лозинка!</p>
+    </div>
+</div>
+<button id="exportLogsBtn" class="button export-btn" onclick="exportToExcel()" style="display: none;">Експортирај</button>
+<div id="dateFilterContainer" style="display: none; text-align: center; margin-bottom: 10px;">
+    <label for="logDateFilter"><b>Избери датум:</b></label>
+    <input type="date" id="logDateFilter" onchange="filterLogsByDate()">
+</div>
+
+
+<!-- Поп-ап модал за историја -->
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeHistoryModal()">&times;</span>
+        <h2>Историја на промени</h2>
+        <div id="historyContent"></div>
+        <button onclick="closeHistoryModal()">ОК</button>
+    </div>
+</div>
+
+
+<!-- Див за прикажување на логовите -->
+<div id="logsContainer" class="container" style="display: none;">
+<!-- Копче за излез од Admin панелот -->
+<button id="exitAdminBtn" class="button exit-btn" onclick="exitAdminPanel()">Излези</button>
+
+    <h2>Активности во реално време</h2>
+    <table id="logsTable">
+        <thead>
+    <tr>
+        <th onclick="sortTable()">Време ▲</th>
+        <th>Корисник</th>
+        <th>Акција</th>
+        <th>Детали</th>
+    </tr>
+</thead>
+
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<button id="logoutBtn" class="button logout-btn" onclick="logoutUser()">Одјави се</button>
+
+
+  <div class="search-container">
+    <h1>Пребарување на податоци</h1>
+    
+	
+	   <div class="search-row">
+        <div class="left">
+            <input type="text" id="typeSearch" placeholder="Пребарај документ..." oninput="suggestFiles()">
+            <div id="suggestionList" class="suggestions"></div>
+        </div>
+    <div class="right">
+            <div id="selectedFilesContainer">
+                <h6>📄 Документи за пребарување:</h6>
+                <div id="selectedFiles"></div>
+            </div>
+        </div>
+    </div>
+ <div class="search-bar">
+    <input type="text" id="searchQuery" placeholder="Внесете поим за пребарување...">
+</div>
+
+<div class="search-button-container">
+    <button class="button history-btn" onclick="startSearch()">Барај</button>
+</div>
+
+</div>
+    <div id="results"></div>
+    <div id="loadingMessage" style="display: none; font-weight: bold; color: red; animation: blink 1s infinite;">
+        Пребарување во тек...
+    </div>
+</div>
+
+
+
+
+
+<!-- Поп-ап модал за детали -->
+<div id="detailsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeDetailsModal()">&times;</span>
+        <h2>Детали</h2>
+        <div id="detailsContent" style="text-align: left;">
+            <!-- Формата ќе се пополни динамички со JavaScript -->
+        </div>
+        <button onclick="saveToPDF()">Зачувај во PDF</button>
+        
+    </div>
+</div>
+
+</div>
+
+
+<div id="detailsContainer" class="container" style="display: none;">
+
+<!-- Модал за внесување на пасворд при уредување -->
+<div id="editModal" class="modal">
+    <div style="position: relative; padding: 20px;">
+        <span class="close-btn" onclick="closeEditModal()">&times;</span>
+        <h2>Најава за уредување</h2>
+        <input type="text" id="email" placeholder="Е-маил">
+        <input type="password" id="password" placeholder="Лозинка">
+        <button onclick="confirmLogin()">Потврди</button>
+        <p id="loginError" style="color: red; display: none;">Невалиден емаил или лозинка!</p>
+    </div>
+</div>
+ </div>
+<script>
+let selectedFiles = []; // 📌 Листа на селектирани документи
+
+// Функција за отворање на поп-ап прозорецот за администраторска најава
+function openAdminModal() {
+    document.getElementById("adminModal").style.display = "block";
+}
+
+
+async function saveSingleChange(fileName, rowIndex, columnName, newValue) {
+    try {
+        const response = await fetch('/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fileName, rowIndex, columnName, newValue, email: loggedInUser })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('Промената е успешно зачувана!');
+        } else {
+            console.error("❌ Грешка при зачувување:", result.error);
+            alert('Грешка при зачувување');
+        }
+    } catch (error) {
+        console.error('❌ Грешка при зачувување:', error);
+        alert('Грешка при зачувување');
+    }
+}
+
+
+// Save the changes to the server
+async function saveChanges(event) {
+    event.preventDefault();  // Овде спречуваме стандардното однесување
+
+    // Преку getElementById или преку класата на модалот
+    const detailsContent = document.getElementById('detailsContent');
+    const inputs = detailsContent.querySelectorAll('input');
+
+    // Проверка дали се најдени input елементи
+    if (!inputs.length) {
+        alert("Нема внесени податоци!");
+        return;
+    }
+
+    const updatedData = {};
+    inputs.forEach(input => {
+        if (input.dataset.columnName) {  // Проверка дали има dataset атрибут
+            updatedData[input.dataset.columnName] = input.value;
+        }
+    });
+
+    const email = loggedInUser;
+
+    try {
+        const response = await fetch('/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ updatedData, email })  // Испрати ги новите податоци и корисничкиот email
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('Промените се зачувани!');
+            closeDetailsModal();  // Затвори го поп-апот ако е успешно
+        } else {
+            alert('Грешка при зачувување');
+        }
+    } catch (error) {
+        console.error('Грешка:', error);
+        alert('Грешка при зачувување');
+    }
+}
+
+
+
+async function showDetails(fileName) {
+    const query = document.getElementById('searchQuery').value;
+
+    try {
+        const response = await fetch(`/details?fileName=${encodeURIComponent(fileName)}&query=${encodeURIComponent(query)}`);
+        const report = await response.json();
+
+        const detailsModal = document.getElementById('detailsModal');
+        const detailsContent = document.getElementById('detailsContent');
+        detailsContent.innerHTML = '';
+
+        if (!report || report.data.length === 0) {
+            detailsContent.innerHTML = '<p>Нема податоци за овој запис.</p>';
+        } else {
+            report.data.forEach((row, rowIndex) => {
+                Object.keys(row).forEach((key) => {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.style.marginBottom = '10px';
+
+                    const label = document.createElement('label');
+                    label.textContent = `${key}: `;
+                    rowDiv.appendChild(label);
+
+                    const input = document.createElement('input');
+                    input.value = row[key];
+                    input.dataset.columnName = key;
+                    input.dataset.rowIndex = rowIndex;
+                    rowDiv.appendChild(input);
+
+                    // 📌 Копче за зачувување
+                    const saveBtn = document.createElement('button');
+                    saveBtn.textContent = 'Зачувај';
+                    saveBtn.className = 'button edit-btn';
+                    saveBtn.onclick = () => saveSingleChange(report.fileName, rowIndex, key, input.value);
+                    rowDiv.appendChild(saveBtn);
+
+                    // 📌 Копче за историја
+                    const historyBtn = document.createElement('button');
+                    historyBtn.textContent = 'Историја';
+                    historyBtn.className = 'button history-btn';
+                    historyBtn.onclick = () => showHistory(report.fileName, rowIndex, key);
+                    rowDiv.appendChild(historyBtn);
+
+                    detailsContent.appendChild(rowDiv);
+                });
+            });
+        }
+
+        detailsModal.style.display = 'block';
+    } catch (error) {
+        console.error("❌ Грешка при прикажување на детали:", error);
+        alert("❌ Грешка при прикажување на детали!");
+    }
+}
+
+
+
+
+// Затвори го поп-ап прозорецот
+function closeDetailsModal() {
+    const detailsModal = document.getElementById('detailsModal');
+    detailsModal.style.display = 'none'; // Скриј го поп-ап прозорецот
+}
+
+
+
+        // Save the details as a PDF file
+        function saveToPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    const detailsContent = document.getElementById('detailsContent');
+
+    let y = 20; // Почетна Y позиција
+
+    // Поминување низ сите податоци и додавање на PDF
+    const content = detailsContent.querySelectorAll('div');
+    content.forEach((div) => {
+        const label = div.querySelector('label').textContent;
+        const value = div.querySelector('input').value; // Добивање на вредноста од input
+
+        pdf.text(`${label} ${value}`, 10, y);
+        y += 10; // Позиција за следниот ред
+
+        // Ако достигнеме до дното на страната, додај нова страница
+        if (y > 270) {
+            pdf.addPage();
+            y = 20; // Ресетирај ја Y позицијата
+        }
+    });
+
+    // Преземи PDF
+    const pdfBlob = pdf.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, '_blank');
+}
+
+
+let loggedInUser = null; // Чување на најавениот корисник
+
+// Функција за проверка на сесијата при лоад на страницата
+function checkLogin() {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        console.log("✅ Корисникот е најавен:", user);
+        document.getElementById("loginModal").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+        document.getElementById("logoutBtn").style.display = "block"; // Прикажи го копчето за одјава
+        loggedInUser = user;
+    } else {
+        console.log("🔒 Корисникот не е најавен, прикажи поп-ап за најава.");
+        document.getElementById("loginModal").style.display = "flex";
+        document.getElementById("mainContent").style.display = "none";
+        document.getElementById("logoutBtn").style.display = "none"; // Скриј го копчето за одјава
+    }
+}
+
+
+window.onload = checkLogin;  // Повикај ја функцијата за проверка на сесија кога страницата се лоадира
+
+async function confirmLogin() {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+        document.getElementById("loginError").style.display = "block";
+        return;
+    }
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            console.log("✅ Успешна најава:", email);
+            loggedInUser = email;
+            localStorage.setItem("loggedInUser", email); // Чувај ја сесијата
+            document.getElementById("loginModal").style.display = "none"; // Скриј го поп-апот
+            document.getElementById("mainContent").style.display = "block"; // Покажи ја содржината
+        } else {
+            console.log("❌ Неуспешна најава:", data.message);
+            document.getElementById("loginError").style.display = "block";
+        }
+    } catch (error) {
+        console.error("❌ Грешка при најавување:", error);
+        document.getElementById("loginError").textContent = "❌ Грешка при најавување!";
+        document.getElementById("loginError").style.display = "block";
+    }
+}
+
+// Функција за пребарување
+// Ажурирана функција за пребарување
+
+
+    
+async function showHistory(fileName, rowIndex, columnName) {
+    try {
+        const response = await fetch(`/history?fileName=${encodeURIComponent(fileName)}&rowIndex=${rowIndex}&columnName=${encodeURIComponent(columnName)}`);
+        const historyData = await response.json();
+
+        let historyContent = "<h3>Историја на измени</h3>";
+        if (historyData.length === 0) {
+            historyContent += "<p>Нема претходни измени.</p>";
+        } else {
+            historyData.forEach(change => {
+                historyContent += `<p><strong>${change.modifiedBy}</strong> ја смени вредноста од "${change.oldValue}" во "${change.newValue}" на ${change.timestamp}</p>`;
+            });
+        }
+
+        document.getElementById('historyModalContent').innerHTML = historyContent;
+        document.getElementById('historyModal').style.display = 'block';
+    } catch (error) {
+        console.error("❌ Грешка при добивање на историјата:", error);
+        alert("❌ Грешка при добивање на историјата!");
+    }
+}
+
+
+        document.getElementById('historyModalContent').innerHTML
+
+
+
+// Функција за зачувување на промените
+async function saveChanges(event, rowIndex) {
+    event.preventDefault();
+    const form = event.target.form;
+    const newData = {};
+
+    Array.from(form.elements).forEach(input => {
+        if (input.value !== "") {
+            newData[input.dataset.column] = input.value;
+        }
+    });
+
+    try {
+        const response = await fetch('/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rowIndex, newData })
+        });
+
+        const result = await response.json();
+        alert(result.message);
+
+        if (result.success) {
+            // Повторно прикажи ги резултатите по промената
+            searchData();
+        }
+    } catch (error) {
+        console.error("❌ Грешка при зачувување на промените:", error);
+        alert("❌ Грешка при зачувување на промените!");
+    }
+}
+
+// Откажи едитирање
+function cancelEditing(event) {
+    const form = event.target.form;
+    document.body.removeChild(form);
+}
+
+
+function printTable(container) {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    pdf.setFontSize(12);
+    let y = 20;  // Y position for the content to be printed
+    
+    const rows = container.querySelectorAll('.record-container div.record'); // Select each record
+    
+    rows.forEach(row => {
+        let x = 10; // X position for the text
+        
+        const columns = row.querySelectorAll('div'); // Select each column in the row
+        columns.forEach((column, index) => {
+            const columnName = column.querySelector('span');
+            const inputValue = column.querySelector('input');
+
+            if (columnName && inputValue) {
+                // Write the column name and its value in the PDF
+                pdf.text(`${columnName.textContent}: ${inputValue.value}`, x, y);
+                y += 10; // Increase Y for the next line
+                
+                // If we're too far down the page, create a new page
+                if (y > 270) {
+                    pdf.addPage();
+                    y = 20; // Reset the Y position
+                }
+            }
+        });
+    });
+
+    // Open the PDF in a new window
+    const pdfBlob = pdf.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, '_blank');
+}
+
+function logoutUser() {
+    localStorage.removeItem("loggedInUser"); // Избриши ја сесијата
+    loggedInUser = null;
+    document.getElementById("mainContent").style.display = "none"; // Скриј ја содржината
+    document.getElementById("loginModal").style.display = "flex"; // Прикажи ја формата за најава
+}
+
+// Отворање на поп-ап кога ќе се кликне на логото
+document.getElementById("logo").addEventListener("click", function() {
+    document.getElementById("adminModal").style.display = "block";
+});
+
+// Затворање на поп-ап
+function closeAdminModal() {
+    document.getElementById("adminModal").style.display = "none";
+}
+
+// Верификација на лозинка
+function verifyAdminPassword() {
+    const password = document.getElementById("adminPassword").value;
+    if (password === "AlkaloidAL01") {
+        document.getElementById("adminModal").style.display = "none";
+        document.getElementById("logsContainer").style.display = "block";
+        document.getElementById("exportLogsBtn").style.display = "block"; // Прикажи копче за извоз
+        document.getElementById("dateFilterContainer").style.display = "block"; // Прикажи филтер за датум
+        fetchLogs(); // Вчитување на логовите
+    } else {
+        document.getElementById("adminError").style.display = "block";
+    }
+}
+
+
+
+// Функција за вчитување логови во реално време
+async function fetchLogs() {
+    try {
+        const response = await fetch('/logs');
+        const logs = await response.json();
+
+        const selectedDate = document.getElementById("logDateFilter").value;
+        const logsTableBody = document.getElementById("logsTable").querySelector("tbody");
+        logsTableBody.innerHTML = "";
+
+        logs.forEach(log => {
+            const logDate = log.timestamp.split("T")[0]; // Извлекување на YYYY-MM-DD формат
+
+            if (!selectedDate || logDate === selectedDate) { // Филтрирање според избраниот датум
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${log.timestamp}</td>
+                    <td>${log.email}</td>
+                    <td>${log.action}</td>
+                    <td>${log.details}</td>
+                `;
+                logsTableBody.appendChild(row);
+            }
+        });
+    } catch (error) {
+        console.error("❌ Грешка при вчитување на логовите:", error);
+    }
+}
+
+
+function filterLogsByDate() {
+    fetchLogs(); // Освежување на табелата при промена на датум
+}
+
+
+//setInterval(fetchLogs, 5000);
+
+
+function exitAdminPanel() {
+    document.getElementById("logsContainer").style.display = "none"; // Скриј го Admin панелот
+    document.getElementById("mainContent").style.display = "block"; // Покажи ја главната содржина
+    document.getElementById("exportLogsBtn").style.display = "none"; // Скриј копче за извоз
+    document.getElementById("dateFilterContainer").style.display = "none"; // Скриј филтер за датум
+}
+
+
+
+function exportToExcel() {
+    let table = document.getElementById("logsTable");
+    let rows = table.rows;
+    let csvContent = "\uFEFF"; // Додавање BOM за да се прикаже правилно UTF-8
+
+    for (let i = 0; i < rows.length; i++) {
+        let rowData = [];
+        let cols = rows[i].cells;
+        
+        for (let j = 0; j < cols.length; j++) {
+            rowData.push('"' + cols[j].innerText + '"'); // Осигурување дека податоците се во наводници
+        }
+        
+        csvContent += rowData.join(",") + "\n";
+    }
+
+    let encodedUri = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "activity_logs.csv");
+    document.body.appendChild(link);
+    link.click();
+}
+
+
+function sortTable() {
+    let table = document.getElementById("logsTable");
+    let rows = Array.from(table.rows).slice(1); 
+    let sortedRows = rows.sort((rowA, rowB) => {
+        let dateA = new Date(rowA.cells[0].innerText);
+        let dateB = new Date(rowB.cells[0].innerText);
+        return dateB - dateA; 
+    });
+
+    let tbody = table.querySelector("tbody");
+    tbody.innerHTML = ""; 
+    sortedRows.forEach(row => tbody.appendChild(row)); 
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const typeSearch = document.getElementById("typeSearch");
+    if (typeSearch) {
+        typeSearch.addEventListener("input", suggestFiles);
+    } else {
+        console.error("❌ Грешка: 'typeSearch' не постои во DOM!");
+    }
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Додавање на event listener за најава со Enter
+    document.getElementById("loginModal").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); 
+            confirmLogin(); 
+        }
+    });
+
+    // Додавање на event listener за пребарување со Enter
+    document.getElementById("searchQuery").addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); 
+            searchData(); 
+        }
+    });
+});
+
+
+const historyBtn = document.createElement('button');
+historyBtn.textContent = 'Историја';
+historyBtn.className = 'button history-btn';
+historyBtn.style.marginLeft = '10px';
+historyBtn.onclick = () => showDetails(report); // Повикај showDetails за да прикажеш податоци во поп-ап прозорецот
+
+async function openFilePopup() {
+    try {
+        const response = await fetch('/getFilesAndFolders');
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const fileListDiv = document.getElementById('fileList');
+        fileListDiv.innerHTML = ''; // Исчисти ги претходните податоци
+
+        // 📌 Прикажи ги подфолдерите
+        if (data.folders.length > 0) {
+            const folderHeader = document.createElement('h4');
+            folderHeader.textContent = "📂 Подфолдери:";
+            fileListDiv.appendChild(folderHeader);
+
+            data.folders.forEach(folder => {
+                const folderItem = document.createElement('div');
+                folderItem.textContent = `📁 ${folder}`;
+                folderItem.style.fontWeight = "bold";
+                fileListDiv.appendChild(folderItem);
+            });
+        }
+
+        // 📌 Прикажи ги документите со чекбоксови
+        if (data.files.length > 0) {
+            const fileHeader = document.createElement('h4');
+            fileHeader.textContent = "📄 Документи:";
+            fileListDiv.appendChild(fileHeader);
+
+            data.files.forEach(file => {
+                const fileItem = document.createElement('div');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = file;
+                checkbox.className = 'file-checkbox';
+
+                const label = document.createElement('label');
+                label.textContent = file;
+                label.style.marginLeft = '5px';
+
+                fileItem.appendChild(checkbox);
+                fileItem.appendChild(label);
+                fileListDiv.appendChild(fileItem);
+            });
+        }
+
+        // 📌 Прикажи го поп-ап прозорецот
+        document.getElementById('filePopup').style.display = 'block';
+    } catch (error) {
+        console.error("❌ Грешка при вчитување на листата на фајлови:", error);
+        alert("❌ Не може да се вчита листата на фајлови. Проверете дали серверот е активен.");
+    }
+}
+
+// 📌 Функција за затворање на поп-ап прозорецот
+function closePopup() {
+    document.getElementById('filePopup').style.display = 'none';
+}
+
+
+// 📌 Функција за затворање на поп-ап прозорецот
+function closePopup() {
+    document.getElementById('filePopup').style.display = 'none';
+}
+
+
+
+
+
+async function suggestFiles() {
+    const typeSearch = document.getElementById('typeSearch');
+    if (!typeSearch) {
+        console.error("❌ Грешка: 'typeSearch' не постои!");
+        return;
+    }
+
+    const input = typeSearch.value.toLowerCase();
+    const suggestionBox = document.getElementById('suggestionList');
+
+    if (input.length < 2) {
+        suggestionBox.style.display = 'none';
+        return;
+    }
+
+    try {
+        const response = await fetch('/getFiles');
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        const files = await response.json();
+        const filteredFiles = files.filter(file => file.toLowerCase().includes(input));
+
+        suggestionBox.innerHTML = '';
+        if (filteredFiles.length === 0) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        filteredFiles.forEach(file => {
+            const suggestion = document.createElement('div');
+            suggestion.textContent = file;
+            suggestion.onclick = () => addSelectedFile(file);
+            suggestionBox.appendChild(suggestion);
+        });
+
+        suggestionBox.style.display = 'block';
+    } catch (error) {
+        console.error("❌ Грешка при вчитување на сугестии:", error);
+    }
+}
+
+
+// 📌 Додавање на селектиран документ во листата
+function addSelectedFile(fileName) {
+    if (!selectedFiles.includes(fileName)) {
+        selectedFiles.push(fileName);
+        updateSelectedFilesDisplay();
+    }
+    const typeSearch = document.getElementById('typeSearch');
+    if (typeSearch) typeSearch.value = ''; 
+    document.getElementById('suggestionList').style.display = 'none';
+}
+
+
+// 📌 Прикажување на селектираните документи
+function updateSelectedFilesDisplay() {
+    const selectedFilesDiv = document.getElementById('selectedFiles');
+    selectedFilesDiv.innerHTML = '';
+
+    console.log("📂 Селектирани документи:", selectedFiles); // Дебагирај ја вредноста
+
+    selectedFiles.forEach(fileName => {
+        const fileDiv = document.createElement('div');
+        fileDiv.className = 'selected-file';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'X';
+        removeBtn.onclick = () => removeSelectedFile(fileName);
+
+        const fileLabel = document.createElement('span');
+        fileLabel.textContent = fileName;
+
+        fileDiv.appendChild(removeBtn);
+        fileDiv.appendChild(fileLabel);
+        selectedFilesDiv.appendChild(fileDiv);
+    });
+}
+
+
+// 📌 Отстранување на селектиран документ
+function removeSelectedFile(fileName) {
+    selectedFiles = selectedFiles.filter(file => file !== fileName);
+    updateSelectedFilesDisplay();
+}
+
+// 📌 Користи ги селектираните документи при пребарување
+async function startSearch() {
+    if (!loggedInUser) {
+        alert("Мора да се најавите за да пребарувате!");
+        return;
+    }
+
+    const query = document.getElementById('searchQuery').value;
+    const resultsDiv = document.getElementById('results');
+
+    if (!Array.isArray(selectedFiles) || selectedFiles.length === 0) {
+        console.warn("⚠ Нема селектирани документи, пребарувам во сите!");
+    }
+
+    resultsDiv.innerHTML = '<p>Пребарувам...</p>'; // Прикажи порака за чекање
+
+    try {
+        const response = await fetch('/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, email: loggedInUser, selectedFiles })
+        });
+
+        const data = await response.json();
+        resultsDiv.innerHTML = ''; // Исчисти ги претходните податоци
+
+        if (data.length === 0) {
+            resultsDiv.innerHTML = '<p>Не се пронајдени резултати.</p>';
+        } else {
+            let tableHtml = `<table>
+                                <tr>
+                                    <th>Фајл</th>
+                                    <th>Детали</th>
+                                </tr>`;
+
+            data.forEach(report => {
+                tableHtml += `<tr>
+                                <td>${report.fileName}</td>
+                                <td><button class="button edit-btn" onclick="showDetails('${report.fileName}')">Детали</button></td>
+                              </tr>`;
+            });
+
+            tableHtml += `</table>`;
+            resultsDiv.innerHTML = tableHtml;
+        }
+    } catch (error) {
+        console.error("❌ Грешка при пребарување:", error);
+        alert("❌ Грешка при пребарување!");
+    }
+}
+
+
+
+</script>
+
+</body>
+</html>

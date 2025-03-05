@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Најава</title>
+</head>
+<body>
+    <h2>Најава</h2>
+    <form id="loginForm">
+        <label for="username">Корисничко име:</label>
+        <input type="text" id="username" required><br><br>
+
+        <label for="password">Лозинка:</label>
+        <input type="password" id="password" required><br><br>
+
+        <button type="submit">Најави се</button>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/index.html';  // Redirect to index.html on success
+                } else {
+                    alert('Грешка при најавата: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
