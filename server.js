@@ -492,6 +492,7 @@ function authenticateUser(email, password, callback) {
 }
 
 
+
     const username = email.split('@')[0]; // Извлекува "mnikolov" од "mnikolov@alkaloid.com.mk"
 const domainUser = `alkaloidad\\${username}`;
 
