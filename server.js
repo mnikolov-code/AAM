@@ -1,3 +1,6 @@
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 require('dotenv').config();
 const mongoose = require('mongoose');
 require('dotenv').config(); // Овозможи читање на .env променливи
@@ -313,6 +316,11 @@ const getFilesAndFolders = (dirPath) => {
 
     return { files, folders };
 };
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 
 app.get('/getFilesAndFolders', async (req, res) => {
     try {
