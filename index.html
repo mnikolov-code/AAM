@@ -497,8 +497,12 @@ h1 {
 <div id="loginModal" class="modal">
     <div>
         <h2>Најава <BR> Asset Lists </h2>
-        <input type="text" id="loginEmail" placeholder="Е-маил">
-        <input type="password" id="loginPassword" placeholder="Лозинка">
+       <form onsubmit="confirmLogin(); return false;">
+    <input type="text" id="loginEmail" placeholder="Е-маил">
+    <input type="password" id="loginPassword" placeholder="Лозинка">
+    <button type="submit"><b>Најави се</b></button>
+</form>
+
 		<BR>
         <button onclick="confirmLogin()"><B>Најави се</B></button>
         <p id="loginError" style="color: red; display: none;">Невалиден емаил или лозинка!</p>
@@ -1098,23 +1102,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Додавање на event listener за најава со Enter
-    document.getElementById("loginModal").addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault(); 
-            confirmLogin(); 
-        }
-    });
 
-    // Додавање на event listener за пребарување со Enter
-    document.getElementById("searchQuery").addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault(); 
-            searchData(); 
-        }
-    });
-});
+
 
 
 const historyBtn = document.createElement('button');

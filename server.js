@@ -1,7 +1,9 @@
 
 
 
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
+console.log("🔍 MONGO_URI од .env:", process.env.MONGO_URI);
 const mongoose = require('mongoose');
 require('dotenv').config(); // Овозможи читање на .env променливи
 const express = require('express');
@@ -11,23 +13,21 @@ const fs = require('fs');
 const xlsx = require('xlsx');
 const csv = require('csv-parser');
 const ldap = require('ldapjs');
+const isLocal = process.env.RENDER === undefined; // Проверува дали се работи на Render или локално
 
 const app = express();
 const PORT = 3000;
 
 // Патеки до фолдерите
-const REPORTS_PATH = '\\\\srvaitalkam\\Reporti';
+const REPORTS_PATH = isLocal ? '\\\\srvaitalkam\\Reporti' : path.join(__dirname, 'local_reports');
 const HISTORY_PATH = '\\\\srvaitalkam\\Reporti\\Martin';
 const LOG_FILE_PATH = path.join(__dirname, 'user_activity_log.txt');
+console.log("🔍 MONGO_URI:", process.env.MONGO_URI);
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log("✅ Successfully connected to MongoDB Atlas!");
-}).catch((err) => {
-  console.error("❌ MongoDB connection error:", err);
-});
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("✅ Successfully connected to MongoDB Atlas!"))
+    .catch((err) => console.error("❌ MongoDB connection error:", err));
+;
 
 const ChangeLog = require('./models/ChangeLog'); // Импортирај го моделот за логови
 
@@ -230,7 +230,6 @@ function logActivity(email, action, details) {
 app.post('/search', async (req, res) => {
     try {
         const { query, email, selectedFiles } = req.body;
-        
         console.log("🔍 Пребарување започнато...");
         console.log("📨 Query:", query);
         console.log("📨 Email:", email);
@@ -240,8 +239,6 @@ app.post('/search', async (req, res) => {
             console.log("⚠️ Лоши параметри!");
             return res.status(400).json({ error: 'Мора да внесете критериум за пребарување и да бидете најавени.' });
         }
-
-        logActivity(email, "Пребарување", `Барање: ${query}`);
 
         let filesToSearch;
         if (selectedFiles && selectedFiles.length > 0) {
@@ -296,7 +293,6 @@ app.post('/search', async (req, res) => {
     }
 });
 
-
 const getAllFiles = (dirPath, arrayOfFiles) => {
     const files = fs.readdirSync(dirPath);
     arrayOfFiles = arrayOfFiles || [];
@@ -330,33 +326,23 @@ const getFilesAndFolders = (dirPath) => {
     return { files, folders };
 };
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 
-
-app.get('/getFilesAndFolders', async (req, res) => {
-    try {
-        const { files, folders } = getFilesAndFolders(REPORTS_PATH);
-        res.json({ files, folders });
-    } catch (error) {
-        console.error('❌ Грешка при вчитување на документи и папки:', error);
-        res.status(500).json({ error: 'Грешка при вчитување на документи и папки.' });
-    }
-});
 
 
 app.get('/getFiles', async (req, res) => {
+    console.log("🔹 API повик: /getFiles");
     try {
         const files = fs.readdirSync(REPORTS_PATH)
             .filter(file => file.endsWith('.xlsx') || file.endsWith('.csv'));
 
-        res.json(files);
+        console.log("📂 Фајлови најдени:", files);
+        res.json(files); // ✅ Make sure this line exists
     } catch (error) {
         console.error('❌ Грешка при вчитување на документи:', error);
         res.status(500).json({ error: 'Грешка при вчитување на документи.' });
     }
 });
+
 
 
 app.get('/details', async (req, res) => {
@@ -465,7 +451,6 @@ app.post('/history', async (req, res) => {
 });
 
 // Функција за автентикација преку Active Directory
-const isLocal = process.env.RENDER === undefined; // Проверува дали се работи на Render или локално
 
 function authenticateUser(email, password, callback) {
     if (isLocal) {
@@ -558,6 +543,12 @@ app.post('/edit', async (req, res) => {
     }
 });
 
+// ✅ Ensure all API routes are declared before this
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 
 // Старт на серверот
