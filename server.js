@@ -456,9 +456,45 @@ app.post('/history', async (req, res) => {
 
 // Функција за автентикација преку Active Directory
 function authenticateUser(email, password, callback) {
-    const client = ldap.createClient({
-        url: 'ldap://alkaloidad.local'
-    });
+    const client = ldap.createClient(const isLocal = process.env.RENDER === undefined; // Проверува дали се работи на Render или локално
+
+if (isLocal) {
+    const ldap = require('ldapjs');
+    function authenticateUser(email, password, callback) {
+        const client = ldap.createClient({ url: 'ldap://alkaloidad.local' });
+
+        const username = email.split('@')[0]; 
+        const domainUser = `alkaloidad\\${username}`;
+
+        client.on('error', (err) => {
+            console.error("❌ LDAP Client Error:", err.message);
+            callback(false);
+        });
+
+        try {
+            client.bind(domainUser, password, (err) => {
+                if (err) {
+                    console.error("❌ Неуспешна автентикација:", err.message);
+                    callback(false);
+                } else {
+                    console.log("✅ Успешна најава:", email);
+                    callback(true);
+                }
+                client.unbind();
+            });
+        } catch (error) {
+            console.error("❌ Фатена грешка при LDAP поврзување:", error.message);
+            callback(false);
+        }
+    }
+} else {
+    console.log("⚠️  LDAP е оневозможен на Render!");
+    function authenticateUser(email, password, callback) {
+        console.log("⚠️  Автоматска најава за тестирање на Render!");
+        callback(true); // Автоматски дозволува најава за тестирање на Render
+    }
+}
+;
 
     const username = email.split('@')[0]; // Извлекува "mnikolov" од "mnikolov@alkaloid.com.mk"
 const domainUser = `alkaloidad\\${username}`;
@@ -491,13 +527,14 @@ app.post('/login', (req, res) => {
     authenticateUser(email, password, (isAuthenticated) => {
         if (isAuthenticated) {
             logActivity(email, "Најава", "Успешна најава");
-            res.json({ success: true, message: 'Успешна најава!' });
+            return res.json({ success: true, message: 'Успешна најава!' }); // ✅ Додаден `return`
         } else {
             logActivity(email, "Најава", "Неуспешна најава");
-            res.status(401).json({ success: false, message: 'Неуспешна автентикација!' });
+            return res.status(401).json({ success: false, message: 'Неуспешна автентикација!' }); // ✅ Додаден `return`
         }
     });
 });
+
 
 app.post('/edit', async (req, res) => {
     try {
