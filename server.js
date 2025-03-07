@@ -233,22 +233,30 @@ app.get('/details', async (req, res) => {
         res.status(500).json({ error: "Error fetching details!" });
     }
 });
+db.changelogs.find().pretty()
 
 app.get('/history', async (req, res) => {
     try {
         const { fileName, rowIndex, columnName } = req.query;
+
         if (!fileName || rowIndex === undefined || !columnName) {
-            return res.status(400).json({ error: "Missing parameters!" });
+            return res.status(400).json({ error: "Недостасуваат параметри!" });
         }
 
         const changes = await ChangeLog.find({ fileName, rowIndex, columnName }).sort({ timestamp: -1 });
 
+        if (changes.length === 0) {
+            console.log(`⚠️ Нема историја за ${fileName}, ред: ${rowIndex}, колона: ${columnName}`);
+            return res.json([]); // Врати празна листа наместо да не врати ништо
+        }
+
         res.json(changes);
     } catch (error) {
-        console.error("❌ Error fetching history:", error);
-        res.status(500).json({ error: "Error fetching history." });
+        console.error("❌ Грешка при добивање на историјата:", error);
+        res.status(500).json({ error: "Грешка при добивање на историјата." });
     }
 });
+
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -264,9 +272,27 @@ app.post('/login', (req, res) => {
     });
 });
 
+let ldapDisabledLogged = false; // Додадено за да не се повторува логот
+
 function authenticateUser(email, password, callback) {
-    console.log("⚠️ Оневозможена LDAP автентикација за тестирање!");
-    callback(true);
+    if (!isLocal) {
+        if (!ldapDisabledLogged) {
+            console.log("⚠️ Оневозможена LDAP автентикација за тестирање!");
+            ldapDisabledLogged = true; // Осигурува дека ова ќе се прикаже само еднаш
+        }
+        callback(true);
+        return;
+    }
+
+    const client = ldap.createClient({ url: 'ldap://alkaloidad.local' });
+
+    client.bind(email, password, (err) => {
+        if (err) {
+            callback(false);
+        } else {
+            callback(true);
+        }
+    });
 }
 
 
