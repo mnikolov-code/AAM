@@ -265,16 +265,11 @@ app.post('/login', (req, res) => {
 });
 
 function authenticateUser(email, password, callback) {
-    const client = ldap.createClient({ url: 'ldap://your-ldap-server' });
-    
-    client.bind(email, password, (err) => {
-        if (err) {
-            callback(false);
-        } else {
-            callback(true);
-        }
-    });
+    console.log("⚠️ Оневозможена LDAP автентикација за тестирање!");
+    callback(true);
 }
+
+
 
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);

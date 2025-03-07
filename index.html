@@ -5,1221 +5,1337 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asset List</title>
     <style>
-      body {
-            margin: 0;
+        body {
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: white; /* Боја на позадината на целата страна */
+            text-align: center;
+            background-color: #f4f4f4;
         }
-
-        button {
-            font-size: 18px; /* Зголемена големина на текстот */
-            padding: 10px 20px; /* Зголемен padding за копчињата */
-            height: auto; /* Прилагодлива висина */
-            width: auto; /* Прилагодлива ширина */
-        }
-
         .container {
-            background-color: white; /* Внатрешна позадина во рамката */
+            margin: 50px auto;
+			text-align: center;
             padding: 20px;
-            padding-left: 80px; /* Ова ќе го помести текстот малку подесно */
-            border: 5px solid #323481; /* Боја на рамката */
-            width: 60%;
-            max-width: 60%;
-            min-width: 40%;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Мал ефект на сенка */
+            width: 40%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
-
-        th {
-            background-color: #323481;
-            font-weight: bold;
-            color: white;
-            padding: 8px;
-            text-align: left;
-        }
-
-        td {
-            background-color: #F2F0DF;
-            color: black;
-            padding: 8px;
-            text-align: left;
-            border: 1px solid black;
-        }
-
-        .error {
-            color: red;
-            margin-top: 5px;
-        }
-
-.save-btn, .cancel-btn {
-    display: block;
-    margin: 10px auto; /* Центрирање на копчињата */
-}
-
-        /* Стилизирање за копчињата Save и Cancel */
-        .save-btn {
-            background-color: #007bff; /* Сина боја за копчето Save */
-            color: white; /* Бел текст на копчето */
-            padding: 10px 20px;
-            margin-right: 15px; /* Простор помеѓу Save и Cancel */
-            border: none;
-            cursor: pointer;
-            display: none; /* Скриј ги копчињата Save и Cancel по дифолт */
-        }
-
-        .cancel-btn {
-            background-color: #ff4d4d; /* Црвена боја за копчето Cancel */
-            color: white; /* Бел текст на копчето */
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            display: none; /* Скриј ги копчињата Save и Cancel по дифолт */
-        }
-
-        .edit-btn, .save-btn, .cancel-btn, .search-btn {
-            font-size: 18px;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .edit-btn {
-    background-color: #4CAF50; /* Зелена боја за копчето Edit */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-right: 15px; /* Простор помеѓу Edit и другите копчиња */
-    display: none; /* Скрие го копчето по дифолт */
-}
-
-        .search-btn {
-            background-color: #4CAF50;
-        }
-
-        /* Модал за фабрички број */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
+        table {
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 300px;
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
             text-align: center;
         }
+        th {
+            background-color: #323481;
+            color: white;
+        }
+        td {
+            background-color: #F2F0DF;
+        }
+        .button {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .history-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .edit-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .print-btn {
+            background-color: #ff9800;
+            color: white;
+        }
+        .modal {
+    display: none; 
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #888;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999; 
+    width: 50%;
+    max-width: 600px;
+    text-align: left; 
+	  max-height: 80%; 
+    overflow-y: auto; 
+}
 
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
+.close-btn {
+    font-size: 24px;
+    cursor: pointer;
+    color: red;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+        }
+        h2 {
+            text-align: center;
+            font-size: 22px;
             font-weight: bold;
         }
 
-        .close-btn:hover, .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        .record {
+            padding: 10px;
+            background-color: #F2F0DF;
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
 
-        .confirm-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
+        .record-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-			.results-container {
+        #loginModal {
     display: flex;
-    flex-direction: column; /* Поставете ги елементите еден под друг */
-    justify-content: center; /* Центрирање по вертикала */
-    align-items: center; /* Центрирање по хоризонтала */
-    width: 100%; /* Поставете ја ширината да биде 100% */
-    max-width: 800px; /* Опционално: Поставете максимална ширина */
-    background-color: white;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-
-        .top-left-logo {
-    width: 150px; /* Прилагодете ја ширината според потребите */
-    height: auto; /* Автоматска висина за одржување на пропорциите */
-    margin-right: 10px; /* Простор помеѓу сликата и копчето */
-}
-
-        /* Поставување на сликата и текстот во истиот ред */
-        .header {
-    position: absolute;
-    top: 10px; /* Растојание од врвот на страницата */
-    left: 10px; /* Растојание од левата страна на страницата */
-    display: flex; /* Поставување на елементите во ред */
-    align-items: center; /* Вертикално центрирање на елементите */
-}
-
-        .asset-list-text {
-            color: #323481; /* Боја на текстот */
-            font-size: 80px; /* Големина на фонтот */
-            font-weight: bold; /* Болд текст */
-            margin-top: -350px; /* Подигни го текстот нагоре */
-        }
-
-    #backButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #007bff; /* Сина боја на копчето */
-    color: #ffffff; /* Бела боја на текстот */
-    border: none;
-    border-radius: 5px;
-}
-
-#backButton:hover {
-    background-color: #0056b3; /* Потемна сина боја при поминување со глувчето */
-}
-
-        img {
-            max-width: 100%; /* Автоматско прилагодување на сликата */
-            height: auto; /* Висина во зависност од ширината */
-            display: block; /* Блок елемент за сликата */
-            margin-top: 20px; /* Простор над сликата */
-        }
-		
-		
-	.page-title {
-    text-align: center; /* Центрирање на текстот */
-    margin-top: 20px; /* Простор помеѓу насловот и горниот дел на страницата */
-    font-size: 32px; /* Големина на текстот */
-    color: #323481; /* Боја на текстот */
-    font-weight: bold; /* Болд текст */
-}	
-
-/* Loading Pop-up Style */
-#loadingPopup {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-}
-
-#loadingPopup .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #888;
-    text-align: center;
-}
-
-/* No Records Found Pop-up Style */
-#noRecordsPopup {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-#noRecordsPopup .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #888;
-    text-align: center;
-}
-
-.history-link {
-    color: #007bff; /* Боја на линкот */
-    text-decoration: none; /* Без подцртување */
-    margin-left: 10px; /* Простор од левата страна */
-    cursor: pointer; /* Покажувач на рака */
-}
-
-.history-link:hover {
-    text-decoration: underline; /* Подцртување на линкот при hover */
-}
-
-/* Стил за pop-up прозорците */
-.popup {
+    height: 85%;
+    background: #f2f1ef;
     position: fixed;
     top: 50%;
     left: 50%;
+    width: 50%;
+    z-index: 999;
+    background-image: url('https://1.bp.blogspot.com/-MyRKRDqfQ9k/Ur7pA019jhI/AAAAAAAAABY/7IfGY-nIYxk/s1600/20121711-alkaloid.jpg');
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: 100px; 
+}
+
+
+        #loginModal div {
+            background: #f2f1ef;
+            padding: 1px;
+            border-radius: 10000px;
+            text-align: center;
+            min-width: 100px;
+            box-shadow: #0c2c68;
+        }
+		
+		@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+#logo {
+    position: fixed; 
+    top: 10px; 
+    left: 10px; 
+    width: 100px; 
+    height: auto; 
+    z-index: 1000; 
+}
+
+
+h1 {
+    color: #0c2c68;
+}
+
+.logout-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.logout-btn:hover {
+    background-color: #b02a37;
+}
+
+#adminModal {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 20px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     z-index: 1000;
+    width: 50%; /* Постави помала ширина */
+    text-align: center;
+	height: 50%;
+}
+
+#adminModal input {
+    width: 80%; /* Намалена ширина на полето за лозинка */
+    padding: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center; /* Центрирај го текстот во полето */
+}
+
+#adminModal button {
+    width: 50%; /* Намали го копчето */
+    padding: 8px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#adminModal button:hover {
+    background-color: #0056b3;
+}
+
+
+#logsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#logsTable th, #logsTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#logsTable th {
+    background-color: #323481;
+    color: white;
+}
+
+.exit-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.exit-btn:hover {
+    background-color: #b02a37;
+}
+
+.export-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.export-btn:hover {
+    background-color: #218838;
+}
+
+#dateFilterContainer {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    gap: 10px; 
+    margin-bottom: 10px;
+    width: 100%; 
+}
+
+#searchQuery {
+    width: 50%; 
+    max-width: 40%; 
+    padding: 10px; 
+    border-radius: 10px;
+}
+
+
+#detailsModal {
+    display: none; /* Скриј го по умолчување */
+    position: fixed;
+    z-index: 1000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Центрирај го поп-ап прозорецот */
+    width: 60%; /* Големина на прозорецот */
+    max-width: 700px; /* Ограничување на максималната ширина */
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #888;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    text-align: left; /* За да текстот биде лево поравнат */
+    overflow-y: auto; /* За да можеш да скролаш ако има многу текст */
+}
+
+/* Стил за копчето за затворање */
+#detailsModal .close-btn {
+    font-size: 24px;
+    color: red;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.popup {
     display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px gray;
+    z-index: 1000;
 }
 
 .popup-content {
     text-align: center;
 }
 
-/* Стил за трепкање на текстот "Loading..." */
-#loading-text {
-    font-size: 20px;
-    animation: blink 1s step-start infinite;
+
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    width: 200px;
 }
 
-@keyframes blink {
-    50% {
-        visibility: hidden;
-    }
+.suggestions div {
+    padding: 5px;
+    cursor: pointer;
 }
 
-/* Стилови за копчиња */
-.popup-content button {
-    margin-top: 10px;
+.suggestions div:hover {
+    background: #ddd;
 }
 
-/* Стилизирање за копчето за принтање */
-#printControls {
-       display: flex;
-    justify-content: center; /* Центрирање на копчињата по хоризонтала */
-    align-items: center; /* Центрирање по вертикала */
-    width: 100%;
-    margin-bottom: 10px;
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    width: 200px;
+    z-index: 1000;
 }
 
-#printButton {
-    background-color: #007bff; /* Сина боја за копчето Print */
+.suggestions div {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.suggestions div:hover {
+    background: #ddd;
+}
+
+
+
+.selected-file {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background: #f2f2f2;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.selected-file button {
+    background: red;
     color: white;
     border: none;
-    padding: 10px 15px;
     cursor: pointer;
-    font-size: 16px;
+    margin-left: 10px;
+    padding: 2px 6px;
+}
+.search-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
-}
-
-#printButton img {
-    margin-right: 5px; /* Простор помеѓу иконата и текстот */
-}
-
-#printButton img {
-    margin-right: 5px; /* Простор помеѓу иконата и текстот */
-}
-
-/* Стилизирање за принтање */
-@media print {
-    @page {
-        size: landscape; /* Постави го принтањето на landscape ориентација */
-        margin: 10mm; /* Постави мали маргини */
-    }
-
-    body {
-        transform: scale(0.8); /* Намали ја содржината за да собере на еден лист */
-    }
-
-    /* Прикажи го логото само при печатење */
-    .print-logo-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px; /* Простор под логото */
-    visibility: visible !important; /* Осигурај се дека логото ќе биде видливо */
-}
-
-.print-logo-container img {
-    width: 100px; /* Ширина на логото */
-    height: auto; /* Автоматска висина за одржување на пропорциите */
-    margin-right: 10px; /* Простор помеѓу логото и текстот */
-}
-
-.print-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #323481;
-    margin-right: 20px; /* Простор помеѓу насловот и датумот */
-}
-
-.print-date {
-    font-size: 18px;
-    color: #333;
-}
-
-
-    /* Сокриј ги непотребните елементи за печатење */
-    #printControls, .edit-btn, .save-btn, .cancel-btn, .search-btn, .history-link, #noRecordsPopup, #loadingPopup {
-        display: none;
-    }
-
-    
-	
-	#result, #printControls {
-    display: flex;
-    justify-content: center; /* Центрирање по хоризонтала */
-    align-items: center; /* Центрирање по вертикала */
+    text-align: center;
     width: 100%;
     margin-top: 20px;
-    flex-direction: column; /* Поставување на елементите вертикално */
 }
 
-#editControls {
-    width: 100%;
-    text-align: left; /* Постави го копчето на левата страна */
+h1 {
+    margin-bottom: 20px;
 }
 
-#result {
+/* Прв ред - Пребарување документи (лево) и листа на избрани документи (десно) */
+.search-row {
     display: flex;
-    justify-content: center; /* Центрирање на табелата */
-    align-items: center; /* Центрирање по вертикала */
-    margin-top: 20px;
-    width: 100%; /* Може да се прилагоди според ширината на страницата */
-    flex-direction: column; /* Поставување на елементите вертикално */
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    max-width: 800px;
 }
 
-    /* Стилови за табелата */
-table {
-    width: auto; /* Стави го на auto за да ја прилагоди ширината според содржината */
-    max-width: 800px; /* Ограничување на максималната ширина */
-    border-collapse: collapse;
-    margin: 10px auto; /* Центрирање на табелата и простор над табелата */
-}
-
-th, td {
-    border: 1px solid black;
-    padding: 8px;
+.left {
+    flex: 1;
     text-align: left;
 }
 
-    /* Прикажи само логото и резултатите при печатење */
-    .print-logo-container, .results-container {
-        visibility: visible !important; /* Осигурај се дека логото и резултатите ќе бидат видливи */
-    }
+.right {
+    flex: 1;
+    text-align: right;
+}
 
-    /* Скриј ги сите останати елементи */
-    body * {
-        visibility: hidden;
-    }
+/* Намалено поле за пребарување */
+#typeSearch {
+    width: 250px;
+    padding: 8px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+/* Кутија за избрани документи (десно) */
+#selectedFilesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 300px;
+    max-width: 350px;
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 
- .table-container { max-width: 100%; overflow-x: auto; }
-        .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 10px; border: 1px solid #ddd; text-align: center; }
-        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border: 2px solid #ddd; z-index: 10; }
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 5; }
-        button { padding: 10px 20px; cursor: pointer; }
-        .edit-form { margin-top: 20px; }
-        .edit-form input { padding: 8px; margin: 10px; width: 200px; }
-        .tab { margin-top: 20px; border: 1px solid #ddd; padding: 20px; }
+.search-bar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.search-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.search-button-container .button {
+    width: 120%;
+    max-width: 900px; 
+    padding: 12px; 
+    font-size: 16px; 
+}
+
+
+#searchQuery {
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+
+.selected-file {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px;
+    background: #f2f2f2;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
 
 
     </style>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+	
+	<!-- Bootstrap 5 CDN -->
+	<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	
 </head>
-<body>
+
+<body onload="checkLogin()">
+
+<img id="logo" src="https://1.bp.blogspot.com/-MyRKRDqfQ9k/Ur7pA019jhI/AAAAAAAAABY/7IfGY-nIYxk/s1600/20121711-alkaloid.jpg" 
+     alt="Company Logo" onclick="openAdminModal()">
+
+
+<!-- 🔒 Поп-ап за најава -->
+<div id="loginModal" class="modal">
+    <div>
+        <h2>Најава <BR> Asset Lists </h2>
+       <form onsubmit="confirmLogin(); return false;">
+    <input type="text" id="loginEmail" placeholder="Е-маил">
+    <input type="password" id="loginPassword" placeholder="Лозинка">
+    <button type="submit"><b>Најави се</b></button>
+</form>
+
+
+		<BR>
+        <button onclick="confirmLogin()"><B>Најави се</B></button>
+        <p id="loginError" style="color: red; display: none;">Невалиден емаил или лозинка!</p>
+    </div>
+</div>
+
+
+<!-- Главна содржина -->
+<div id="mainContent" style="display: none;">
 
 
 
-<div class="print-logo-container" id="printLogoContainer" style="display: none;">
+
+
+
+<!-- Поп-ап за лозинка -->
+<div id="adminModal" class="modal">
+    <div style="position: relative; padding: 20px;">
+        <span class="close-btn" onclick="closeAdminModal()">&times;</span>
+        <h2>Администраторска најава</h2>
+    <form onsubmit="verifyAdminPassword(); return false;">
+    <input type="password" id="adminPassword" placeholder="Внеси лозинка">
+    <button type="submit">Влези</button>
+</form>
+
+        <p id="adminError" style="color: red; display: none;">Неточна лозинка!</p>
+    </div>
+</div>
+<button id="exportLogsBtn" class="button export-btn" onclick="exportToExcel()" style="display: none;">Експортирај</button>
+<div id="dateFilterContainer" style="display: none; text-align: center; margin-bottom: 10px;">
+    <label for="logDateFilter"><b>Избери датум:</b></label>
+    <input type="date" id="logDateFilter" onchange="filterLogsByDate()">
+</div>
+
+
+
+
+<!-- Див за прикажување на логовите -->
+<div id="logsContainer" class="container" style="display: none;">
+<!-- Копче за излез од Admin панелот -->
+<button id="exitAdminBtn" class="button exit-btn" onclick="exitAdminPanel()">Излези</button>
+
+    <h2>Активности во реално време</h2>
+    <table id="logsTable">
+        <thead>
+    <tr>
+        <th onclick="sortTable()">Време ▲</th>
+        <th>Корисник</th>
+        <th>Акција</th>
+        <th>Детали</th>
+    </tr>
+</thead>
+
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<button id="logoutBtn" class="button logout-btn" onclick="logoutUser()">Одјави се</button>
+
+
+  <div class="search-container">
+    <h1>Пребарување на податоци</h1>
     
-    <div class="print-title">Asset List</div>
-    <div class="print-date" id="printDate"></div>
-</div>
-
-
-<!-- Loading Pop-up -->
-<div id="loadingPopup" class="modal">
-    <div class="modal-content">
-        <h2 id="loadingText">Loading...</h2>
-    </div>
-</div>
-
-<!-- No Records Found Pop-up -->
-<div id="noRecordsPopup" class="modal">
-    <div class="modal-content">
-        <h2>Не се пронајдени записи</h2>
-        <button onclick="closeNoRecordsPopup()">OK</button>
-    </div>
-</div>
-
-
-
-   <div class="header">
-    <img src="https://assets-global.website-files.com/64be79587b1cd77bf8857b88/652017f68c5bff8151959c08_alkaloid.jpg" alt="Alkaloid Logo" class="top-left-logo">
-    <button id="backButton" onclick="refreshPage()">Назад</button>
-</div>
-
-<div class="page-title">
-    <h2>Asset List</h2>
-</div>
-
-    <div class="container">
-        <h1>Пребарување на податоци</h1>
 	
-        <form id="searchForm" onsubmit="event.preventDefault();">
-            <label for="searchQuery">Внеси поим за пребарување:</label>
-            <input type="text" id="searchQuery" name="searchQuery" onkeyup="validateInput()" autocomplete="off">
-            <div id="errorMsg" class="error"></div>
-        </form>
-        <button class="search-btn" onclick="showFactoryNumberModal()">Барај</button>
-    </div>
-	
-	<div id="result" class="results-container">
-    <div id="editControls" style="display: none; text-align: left; margin-bottom: 10px;">
-    <button id="editButton" class="edit-btn" onclick="showPasswordModal()">Edit</button>
-</div>
-
-</div>
-
-	
-	<div id="printControls">
- 
-    <button class="save-btn" onclick="saveChanges()">Save</button>
-    <button class="cancel-btn" onclick="cancelEditing()">Cancel</button>
-</div>
-
-
-
-
-
-    <!-- Модал за фабрички број -->
-    <div id="factoryModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeFactoryNumberModal()">&times;</span>
-            <h2>Внеси фабрички број</h2>
-            <input type="text" id="factoryNumber" name="factoryNumber">
-            <button class="confirm-btn" onclick="validateFactoryNumber()">Потврди</button>
-            <div id="factoryError" class="error"></div>
+	   <div class="search-row">
+        <div class="left">
+            <input type="text" id="typeSearch" placeholder="Пребарај документ..." oninput="suggestFiles()">
+            <div id="suggestionList" class="suggestions"></div>
+        </div>
+    <div class="right">
+            <div id="selectedFilesContainer">
+                <h6>📄 Документи за пребарување:</h6>
+                <div id="selectedFiles"></div>
+            </div>
         </div>
     </div>
+ <div class="search-bar">
+    <input type="text" id="searchQuery" placeholder="Внесете поим за пребарување...">
+</div>
+
+<div class="search-button-container">
+    <button class="button history-btn" onclick="startSearch()">Барај</button>
+</div>
+
+</div>
+    <div id="results"></div>
+    <div id="loadingMessage" style="display: none; font-weight: bold; color: red; animation: blink 1s infinite;">
+        Пребарување во тек...
+    </div>
+</div>
 
 
-    <!-- Модал за пасворд -->
-<div id="passwordModal" class="modal">
+
+
+
+<!-- Поп-ап модал за детали -->
+<div id="detailsModal" class="modal">
     <div class="modal-content">
-        <span class="close-btn" onclick="closePasswordModal()">&times;</span>
-        <h2>Внеси пасворд за уредување</h2>
-        <input type="password" id="password" name="password">
-        <button class="confirm-btn" onclick="validatePassword()">Потврди</button>
-        <div id="passwordError" class="error"></div>
+        <span class="close-btn" onclick="closeDetailsModal()">&times;</span>
+        <h2>Детали</h2>
+        <div id="detailsContent" style="text-align: left;">
+            <!-- Формата ќе се пополни динамички со JavaScript -->
+        </div>
+        <button onclick="saveToPDF()">Зачувај во PDF</button>
+        
     </div>
+
+</div>
+
 </div>
 
 
-	
-	<div id="loading-popup" class="popup">
-    <div class="popup-content">
-        <p id="loading-text">Loading</p>
+<div id="detailsContainer" class="container" style="display: none;">
+
+<!-- Модал за внесување на пасворд при уредување -->
+<div id="editModal" class="modal">
+    <div style="position: relative; padding: 20px;">
+        <span class="close-btn" onclick="closeEditModal()">&times;</span>
+        <h2>Најава за уредување</h2>
+        <input type="text" id="email" placeholder="Е-маил">
+        <input type="password" id="password" placeholder="Лозинка">
+        <button onclick="confirmLogin()">Потврди</button>
+        <p id="loginError" style="color: red; display: none;">Невалиден емаил или лозинка!</p>
     </div>
 </div>
-	
-<div id="historyModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeHistoryModal()">&times;</span>
-        <h2>Последна измена</h2>
-        <div id="historyContent"></div>
-        <button class="confirm-btn" onclick="closeHistoryModal()">OK</button>
-    </div>
-</div>
-
-<!-- Модал за "Нема пронајдени податоци" -->
-<div id="noHistoryModal" class="modal">
-    <div class="modal-content">
-        <h2>Нема пронајдени податоци</h2>
-        <button class="confirm-btn" onclick="closeNoHistoryModal()">OK</button>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+ </div>
 
 
 
-    <script>
-        let inventoryMode = false;
-        let originalData = [];
-        let currentEditableTable = null;
-       const validFactoryNumbers = [
-  60609, 60694, 60606, 60697, 60688, 60705, 60670, 60706, 60699, 60667, 60659, 60645, 60695, 60698, 60682, 60687, 60692, 
-            60664, 60629, 60680, 60689, 60707, 60690, 60647, 60685, 60668, 60677, 60604, 60691, 60674, 60676, 75008, 75002, 75012, 
-            75004, 75015, 75013, 75009, 75010, 75016, 75007, 75003, 60628, 60703, 60704, 60635, 60693, 60700, 60617, 60624, 60634, 
-            60636, 60662, 60630, 60621, 60614, 56447, 60702, 60701, 60625, 60648, 60696, 60611, 60671, 56642, 56664, 56534, 56680, 
-            56484, 56743, 56685, 56528, 56715, 56744, 56643, 12345, 56909, 56938, 56965, 56959, 56979, 58596, 56985, 56919, 57000, 
-            57015, 57002, 57011, 57025, 57001, 57064, 57080, 57148, 58659, 57206, 57262, 57770, 57819, 57920, 58150, 58194, 58601, 
-            58831, 59021, 56456, 57150, 56637, 58038, 57762, 57858, 56863, 57594, 56783, 56952, 53503, 56561, 56563, 56774, 56549, 
-            56671, 56562, 53082, 56705, 56592, 56497, 56397, 56734, 56544, 56332, 56555, 53074, 56684, 56518, 43818, 56499, 56594, 
-            56786, 48666, 52809, 56576, 56408, 56541, 43621, 56515, 56639, 56741, 56556, 56616, 56687, 56553, 56394, 56557, 56495, 
-            56505, 53236, 56396, 56593, 43982, 56532, 57782, 56694, 47317, 35343, 56755, 56542, 56628, 56767, 56682, 56780, 56533, 
-            56573, 56600, 56466, 50768, 56764, 52418, 56424, 56545, 56750, 56591, 56574, 56625, 56581, 52027, 56548, 48976, 41106, 
-            56690, 54429, 56627, 56511, 52469, 56493, 53449, 56501, 56375, 46574, 40959, 56111, 56381, 56385, 55867, 56613, 52787, 
-            53287, 56597, 56564, 56457, 56227, 40886, 56455, 56380, 56519, 56546, 56543, 56488, 48836, 56485, 52884, 56644, 56458, 
-            48518, 54666, 52876, 40762, 45055, 53252, 56481, 51187, 56551, 56578, 56560, 52612, 56324, 56638, 56468, 44148, 56500, 
-            46531, 40126, 49034, 52922, 56584, 54011, 56387, 56445, 56429, 56605, 40975, 43974, 56567, 56416, 56389, 56583, 56448, 
-            56516, 55131, 52647, 56513, 56678, 56629, 41521, 56477, 56602, 56716, 56606, 56703, 56503, 56686, 56699, 56717, 56506, 
-            56615, 56725, 56701, 56646, 56425, 56667, 56624, 44911, 56566, 56386, 56751, 27758, 44652, 56243, 56766, 56635, 52019, 
-            56392, 56587, 56681, 56722, 46752, 56760, 56512, 56630, 56490, 56369, 56761, 56494, 56470, 56596, 56718, 56419, 56714, 
-            54607, 54488, 56527, 46566, 52264, 56575, 47384, 56430, 56729, 55271, 42811, 54852, 50997, 56463, 56618, 54682, 56782, 
-            56465, 56372, 56795, 54437, 56552, 56450, 56498, 56400, 56675, 56607, 56469, 54674, 56585, 56580, 42994, 58262, 56393, 
-            56475, 56523, 52167, 56711, 56438, 56446, 50989, 56422, 56695, 52396, 56692, 56577, 56688, 56611, 56439, 56726, 56713, 
-            56623, 52639, 56550, 56603, 46108, 46914, 58810, 44385, 56738, 56504, 47171, 56388, 56781, 56727, 56478, 56535, 56749, 
-            56586, 56496, 53554, 56579, 54062, 56719, 54593, 55158, 56739, 56672, 56526, 56673, 56476, 43656, 56568, 50865, 56604, 
-            45608, 56437, 56371, 56626, 58809, 56669, 56645, 56402, 56633, 56440, 56415, 54054, 50091, 46809, 56752, 56508, 56702, 
-            56696, 54623, 54577, 56525, 56479, 56844, 58535, 56748, 57059, 56817, 51152, 56796, 56765, 56826, 56842, 56850, 56818, 
-            57056, 56846, 56797, 56897, 56852, 56810, 56804, 56847, 56710, 56811, 56806, 56855, 56712, 56813, 56890, 56945, 56912, 
-            56803, 56805, 56807, 56870, 56802, 56840, 56853, 54542, 56918, 56892, 56832, 50385, 56409, 57058, 56828, 56864, 56843, 
-            56896, 47953, 56737, 56762, 56800, 49441, 56809, 56898, 56814, 56833, 56867, 56785, 56917, 56911, 56939, 56937, 56942, 
-            56933, 56947, 56923, 56921, 56922, 56908, 56940, 56920, 56924, 56723, 56967, 56973, 56697, 57068, 56955, 57014, 56951, 
-            56958, 47759, 56984, 56974, 56993, 57071, 56966, 56987, 56953, 56961, 56983, 56982, 56981, 54275, 56977, 56980, 56978, 
-            56779, 56524, 56816, 56676, 56827, 57013, 56995, 56835, 56928, 57031, 56972, 57030, 56992, 57028, 57024, 57023, 57010, 
-            57047, 57021, 56954, 57026, 57032, 56740, 57052, 56845, 56927, 57054, 58603, 57046, 56996, 57004, 56926, 56997, 57053, 
-            57020, 56841, 57057, 57079, 57092, 57082, 57077, 57083, 57096, 57078, 57089, 57088, 57081, 56691, 47406, 57087, 57097, 
-            57086, 57102, 57100, 57029, 57105, 57107, 57104, 57103, 57050, 57111, 57099, 56854, 57084, 56652, 57115, 57127, 57139, 
-            57142, 57134, 56975, 57151, 57153, 56834, 56903, 57154, 57156, 57158, 57165, 57143, 57164, 57157, 57173, 57168, 57170, 
-            57174, 57183, 57177, 57184, 57203, 57205, 57212, 57207, 57208, 57385, 57216, 57217, 57215, 57214, 57223, 57224, 57222, 
-            57227, 57248, 57247, 57251, 57244, 57245, 57243, 57246, 58623, 57256, 57035, 57257, 57101, 57258, 54941, 57180, 57179, 
-            57181, 57178, 57182, 57261, 57260, 56916, 57266, 57265, 57263, 57264, 57230, 57226, 57172, 57231, 57241, 57275, 57274, 
-            57272, 57270, 57296, 57271, 57152, 57171, 57242, 56530, 57220, 57218, 57295, 57293, 57294, 57299, 57301, 57300, 57291, 
-            57298, 56819, 57309, 57314, 57307, 57304, 57292, 57072, 57280, 57237, 57310, 56991, 57303, 57108, 57452, 57340, 57313, 
-            57311, 57317, 57320, 57319, 57322, 57323, 57306, 57308, 57336, 57341, 57339, 56812, 57337, 57325, 57324, 57338, 57343, 
-            56674, 57347, 57350, 57351, 57346, 57328, 57364, 57369, 57375, 57368, 57372, 57387, 57191, 57389, 57383, 58213, 57407, 
-            57354, 57356, 57358, 57357, 57409, 57412, 57410, 57532, 56599, 56655, 57416, 57419, 57423, 57421, 56899, 56831, 56704, 
-            56631, 50458, 57155, 56861, 56830, 57190, 57189, 57425, 57428, 57430, 57434, 57432, 57433, 57436, 57408, 57438, 57427, 
-            57426, 57429, 57435, 57444, 57445, 57443, 57446, 57448, 57450, 57449, 57457, 57141, 56420, 56507, 56659, 56798, 56449, 
-            56559, 57459, 57460, 57456, 57441, 57439, 57463, 57442, 57465, 57470, 57469, 57467, 57418, 57473, 57468, 56770, 56876, 
-            57040, 57678, 56486, 57471, 56471, 57478, 57476, 57491, 57496, 57497, 57492, 57495, 57500, 56871, 56769, 56768, 57509, 
-            57511, 57515, 57508, 57507, 57523, 57519, 57510, 57516, 57538, 57539, 57475, 57533, 57541, 57424, 57498, 57545, 57535, 
-            57544, 57548, 57540, 57546, 57534, 57549, 57592, 57376, 57381, 57321, 57018, 57631, 57447, 57563, 57569, 57566, 57571, 
-            57601, 56660, 57600, 47996, 57167, 44571, 57606, 57567, 57608, 57565, 57612, 57568, 57607, 57610, 57611, 57619, 57553, 
-            57617, 57620, 57627, 57708, 57703, 58282, 57729, 57730, 57731, 57722, 57725, 58041, 57710, 57728, 57732, 57628, 57626, 
-            57632, 57639, 57644, 57186, 57682, 57397, 56636, 57550, 57360, 57233, 44261, 56662, 57333, 57196, 56405, 56436, 56640, 
-            57645, 57623, 57624, 57643, 57798, 57647, 57648, 57646, 57649, 57650, 57651, 57656, 57654, 57655, 57249, 57659, 57665, 
-            57664, 57663, 57673, 57667, 57670, 57677, 57564, 57691, 57692, 57688, 57503, 57504, 57487, 56872, 57574, 57699, 57700, 
-            57653, 57660, 57658, 57661, 57672, 57671, 57694, 57701, 57705, 57709, 57711, 57724, 57723, 57733, 57652, 57727, 57726, 
-            56777, 57717, 57718, 57714, 57713, 57707, 57735, 57736, 56900, 57734, 57750, 57758, 57757, 57756, 57719, 57766, 57765, 
-            56875, 57771, 57768, 57774, 56877, 57767, 57773, 57776, 57764, 57777, 57780, 57779, 57009, 57599, 56820, 57829, 57781, 
-            57788, 57790, 57789, 57793, 57109, 57830, 56901, 56049, 57792, 57197, 56794, 57305, 57676, 57772, 57596, 57200, 56793, 
-            56746, 36455, 56407, 57778, 55794, 55808, 57822, 56492, 56689, 57140, 57598, 57060, 57597, 57775, 56647, 57038, 51209, 
-            54534, 57359, 57135, 57800, 57799, 57802, 57797, 57833, 57839, 57869, 57554, 57685, 57879, 58083, 57488, 57361, 57899, 
-            9010665, 58045, 57630, 57804, 57997, 57547, 57070, 56589, 57809, 57810, 57812, 57811, 57807, 57062, 52841, 57815, 57931, 
-            58200, 58133, 57938, 57995, 57936, 57942, 58312, 58136, 57927, 58097, 58003, 57934, 57968, 58124, 57948, 57947, 56880, 
-            57977, 58196, 57980, 57994, 57818, 57841, 57840, 57847, 57849, 57850, 57816, 57845, 57851, 57854, 57844, 57855, 57123, 
-            57853, 58147, 57857, 57856, 57122, 48577, 57228, 57826, 57017, 57861, 57860, 58044, 57382, 56895, 57866, 57862, 57864, 
-            57863, 57865, 57867, 56822, 57480, 56849, 57911, 57783, 57919, 57917, 57916, 57918, 57914, 57913, 57915, 57922, 57923, 
-            57453, 57898, 57924, 57926, 57925, 57045, 57043, 57044, 57932, 57870, 57940, 57933, 57953, 57939, 57951, 57929, 57136, 
-            57941, 57946, 57949, 57952, 57743, 57983, 57982, 57950, 57978, 45934, 57976, 57986, 57987, 57984, 57991, 57992, 57993, 
-            57989, 57332, 57999, 58001, 57996, 58004, 58005, 58006, 58007, 57998, 57552, 46736, 57575, 57335, 56824, 58008, 58010, 
-            58009, 58015, 58012, 58019, 58020, 58018, 58014, 58002, 57526, 58023, 58024, 58056, 58026, 58016, 58029, 58034, 57194, 
-            58033, 58032, 58039, 58040, 58030, 58042, 57881, 56905, 57146, 58062, 57945, 57971, 57935, 57944, 58063, 58066, 57593, 
-            58065, 58084, 58760, 58523, 58372, 58422, 58244, 58615, 58548, 58206, 58197, 58209, 58201, 58135, 58198, 58248, 58324, 
-            58159, 57957, 58203, 58180, 58257, 58327, 58598, 58237, 58142, 58204, 58095, 58031, 58067, 58098, 58096, 58099, 58107, 
-            58110, 58108, 58112, 48623, 57896, 56888, 58111, 58115, 58114, 58113, 58116, 58092, 58121, 58118, 58120, 58119, 58123, 
-            58122, 58117, 58125, 58126, 58134, 57769, 58138, 58140, 57098, 57066, 57067, 58143, 58141, 58145, 58144, 58161, 58162, 
-            58160, 58156, 58149, 58153, 58154, 58157, 57110, 56621, 58185, 58184, 58187, 58178, 58191, 58190, 58179, 56775, 58207, 
-            58208, 58189, 58186, 58202, 58210, 58199, 58216, 58212, 58214, 57828, 58241, 58243, 58246, 58251, 58053, 57893, 58235, 
-            58239, 58238, 58234, 58233, 58259, 57805, 57969, 58192, 57889, 57876, 58265, 58274, 45233, 58273, 9050037, 58268, 58269, 
-            58266, 38563, 42005, 58611, 58411, 58501, 58604, 58689, 58415, 58479, 58779, 58421, 58481, 58684, 58682, 58423, 58450, 
-            58448, 58416, 56902, 58245, 57794, 58308, 58313, 58315, 58335, 58163, 54399, 58310, 58316, 58317, 58314, 58323, 58332, 
-            58331, 58333, 58334, 58329, 58330, 58322, 58338, 58340, 58339, 58321, 58311, 58359, 47066, 57239, 57331, 58361, 58263, 
-            58360, 58264, 58309, 58368, 58369, 58370, 58371, 58236, 57746, 58364, 58374, 58076, 57880, 58069, 58608, 58410, 57621, 
-            9010874, 56641, 57405, 58412, 58414, 58405, 58413, 58395, 56874, 58427, 58419, 58431, 58436, 58439, 57791, 58441, 58442, 
-            56514, 58451, 58449, 58476, 58471, 58473, 58470, 57602, 58433, 58474, 58489, 58446, 58539, 56776, 57890, 58477, 58492, 
-            58493, 58478, 57831, 57138, 56435, 57785, 57370, 58503, 58077, 56771, 58500, 58884, 58563, 58588, 58680, 58729, 58788, 
-            58824, 58546, 58586, 58613, 58614, 58654, 58587, 58589, 58557, 58616, 58599, 58509, 57825, 58512, 58798, 58515, 58524, 
-            58514, 58518, 58513, 56825, 58520, 58526, 58529, 56857, 57763, 57796, 58533, 57477, 56661, 50326, 47503, 57008, 58530, 
-            58542, 58543, 57690, 56398, 56391, 56936, 57614, 57814, 57315, 42269, 44687, 58556, 58561, 58552, 58550, 58300, 9010945, 
-            58497, 56893, 58566, 58569, 57560, 58573, 58572, 58575, 58574, 58580, 56968, 58576, 58564, 56823, 58453, 57075, 56517, 
-            56914, 58726, 58408, 57559, 58527, 58525, 58579, 58581, 58584, 58592, 57198, 57912, 56759, 57806, 58593, 58597, 57289, 
-            58606, 58602, 58600, 58609, 58610, 58551, 57675, 58434, 57225, 57259, 58620, 58619, 58617, 58612, 57250, 58624, 58618, 
-            58627, 58626, 58630, 58635, 58631, 58643, 57808, 58633, 58342, 58642, 58649, 58653, 42153, 44091, 44393, 58650, 58656, 
-            58647, 58658, 58648, 58666, 58671, 57163, 57745, 57530, 58870, 58793, 58921, 58925, 9050178, 9050179, 58485, 58486, 
-            58673, 58683, 58672, 58685, 58688, 58681, 58692, 58687, 58660, 58693, 58701, 58694, 58707, 58717, 58724, 58723, 44423, 
-            45187, 47325, 48135, 48399, 48852, 49069, 50032, 50148, 50156, 51144, 52531, 55662, 56390, 56509, 56529, 56569, 56657, 
-            56883, 56915, 56949, 56950, 56960, 57238, 57255, 57353, 57399, 57570, 57605, 57697, 57803, 57887, 57891, 57903, 57965, 
-            58052, 58060, 58093, 58155, 58247, 58278, 58306, 58365, 58424, 58425, 58426, 58461, 58490, 58499, 58583, 58632, 58634, 
-            58655, 58663, 58686, 58725, 58731, 9010970, 57666, 58712, 58711, 58708, 58730, 58746, 58750, 58748, 58728, 58738, 58743, 
-            58749, 9011023, 9011024, 58957, 58732, 58745, 58759, 58764, 58895, 58815, 58904, 58789, 58794, 58777, 58767, 58705, 
-            58769, 58774, 58773, 58772, 58775, 58778, 58780, 57892, 58786, 58787, 58792, 58955, 58795, 58799, 58802, 58803, 58804, 
-            58805, 58806, 58814, 58829, 58830, 58816, 9011034, 58818, 58976, 58819, 58834, 58835, 58836, 58839, 58844, 58845, 58847, 
-            58848, 58849, 58846, 58854, 58860, 58862, 58864, 9011040, 58866, 58871, 58872, 58873, 58876, 58878, 58880, 58881, 58882, 
-            58883, 58885, 57801, 58886, 58890, 58891, 58893, 58896, 58902, 58909, 58910, 58912, 58914, 58917, 58923, 58922, 58926, 
-            58938, 58939, 58943, 58935, 58937, 58948, 58949, 58952, 58951, 58950, 9050229, 58968, 58964, 58965, 58977, 58984, 58987, 
-            9050203, 9050205, 9050193, 9050226, 59001, 58997, 59000, 59015, 59023, 59025, 55557, 58130, 9010972, 55581, 9010973, 
-            55611, 58132, 9010975, 55638, 58137, 58791, 58139, 58790, 58963, 55816, 58148, 58887, 55891, 58152, 58894, 58347, 56395, 
-            58158, 58765, 58349, 56401, 58164, 9010996, 56403, 58165, 9010997, 9010766, 56404, 58166, 9010998, 9010925, 56410, 58167, 
-            9011000, 58868, 56442, 58168, 58813, 58869, 58169, 56491, 58174, 58919, 58175, 9011007, 58762, 58918, 58177, 58783, 59020, 
-            58181, 58781, 9011028, 57718, 56595, 58188, 58970, 58897, 56634, 58195, 9011012, 56653, 58205, 58971, 9050154, 58874, 
-            58211, 58812, 58215, 58930, 56663, 58217, 58934, 9050162, 56720, 58932, 9050160, 56730, 58227, 9011019, 56732, 58228, 
-            58995, 9050139, 58859, 56735, 58229, 58969, 9050145, 58833, 56745, 58231, 58933, 9050143, 56753, 9050132, 58832, 56757, 
-            58249, 9050140, 58703, 56758, 58252, 9050169, 58704, 56763, 58254, 9050133, 58709, 58255, 58182, 58713, 56778, 58256, 
-            9050151, 9010909, 9011057, 56788, 58258, 58151, 9050142, 59022, 56789, 58260, 58706, 56790, 58261, 9011015, 9050149, 
-            56791, 58270, 58088, 9050163, 56792, 58271, 56815, 58272, 58440, 58275, 9050170, 56859, 58276, 9050168, 58962, 56866, 
-            58277, 9050157, 56869, 58875, 58279, 58758, 58993, 56882, 58280, 58992, 58281, 9011046, 56884, 58283, 56887, 58284, 
-            58927, 56904, 58285, 56906, 58292, 56913, 58293, 58295, 56935, 58298, 58299, 58303, 38288, 56962, 58319, 44644, 56963, 
-            58320, 9011048, 51004, 56964, 58325, 58954, 51039, 56969, 58326, 58956, 51853, 58328, 58950, 55786, 56988, 58336, 58850, 
-            55883, 58337, 56989, 58341, 57076, 56990, 58947, 57365, 56998, 58350, 57366, 56999, 58351, 57005, 58353, 57609, 57006, 
-            58354, 57613, 57012, 58356, 58837, 57820, 57033, 58358, 58027, 57034, 58362, 58756, 58840, 57894, 59024, 58242, 57036, 
-            58363, 58250, 57049, 57065, 58366, 38296, 57073, 58367, 58879, 9050230, 40401, 57074, 58373, 58782, 58958, 58986, 58375, 
-            58784, 58985, 57128, 58376, 58785, 57130, 58377, 57144, 57145, 57160, 57162, 58382, 58898, 58384, 57193, 58385, 58761, 
-            58901, 57195, 58388, 58905, 58928, 57199, 58389, 58907, 57201, 57210, 58391, 58911, 57211, 58392, 9011047, 58913, 57229, 
-            58899, 57236, 58900, 58397, 58903, 57252, 58399, 58906, 58402, 58908, 58960, 57276, 58403, 58991, 57277, 58404, 57283, 
-            58407, 9011049, 57284, 58409, 9011050, 57285, 58417, 58768, 58861, 58966, 57290, 58974, 58967, 57297, 57326, 57327, 
-            58428, 57334, 58429, 57342, 58430, 57344, 58435, 57345, 58437, 58438, 57390, 58443, 57392, 58444, 58841, 57393, 58445, 
-            57398, 58447, 58452, 58733, 57400, 58454, 58734, 57414, 58455, 58735, 59002, 57451, 58456, 57455, 58457, 57461, 58458, 
-            59003, 57462, 58459, 58741, 9050222, 57472, 58998, 57484, 58462, 59004, 57502, 58463, 9050165, 57513, 58464, 9050166, 
-            57525, 58465, 9050164, 57527, 58466, 9050161, 57528, 58467, 58877, 57529, 58468, 58888, 57531, 58480, 58776, 58889, 
-            58482, 57537, 58483, 58751, 57543, 58484, 58752, 9011052, 57556, 58487, 58999, 58920, 9011051, 9011053, 58742, 58961, 
-            57572, 58494, 57573, 58495, 58744, 58924, 57576, 58496, 57582, 58498, 9050138, 59007, 57585, 58931, 59009, 57595, 58502, 
-            59010, 57604, 58504, 58737, 59005, 58505, 59011, 57614, 58506, 59008, 57615, 58507, 58978, 59012, 57616, 58510, 9050167, 
-            59006, 42021, 57618, 58511, 58979, 57622, 58522, 58980, 43702, 57629, 58528, 9050155, 58851, 9011054, 57633, 58531, 
-            58853, 57634, 58532, 44202, 57635, 58534, 58855, 44342, 57637, 58536, 58852, 58988, 44369, 41599, 57638, 58537, 9050228, 
-            57668, 58538, 57674, 58973, 57679, 58541, 57693, 58544, 58863, 57695, 58545, 58547, 57698, 58549, 57702, 58553, 58843, 
-            9010461, 57704, 58555, 58867, 57716, 58559, 58865, 57720, 58560, 58916, 57721, 58562, 58915, 57737, 58565, 58996, 57738, 
-            58568, 57739, 58571, 57740, 58577, 57741, 57747, 58582, 59018, 57748, 59019, 57749, 58585, 56965, 59013, 57752, 58591, 
-            59014, 57754, 57759, 59016, 57760, 59017, 57761, 58605, 58757, 9011055, 58621, 9011056, 43915, 57813, 58622, 58990, 
-            44237, 57821, 58625, 58989, 57823, 58628, 44709, 57824, 45063, 57827, 57832, 45373, 57842, 58636, 45632, 57843, 46051, 
-            57846, 58892, 46116, 57859, 58639, 58640, 58981, 58641, 58982, 57900, 58651, 57909, 9050180, 56743, 57910, 57002, 57921, 
-            58150, 57137, 57930, 58662, 56919, 57943, 57954, 58664, 57080, 46833, 57955, 58665, 57770, 47147, 57956, 58667, 57262, 
-            57958, 58668, 56643, 47422, 57959, 58669, 57148, 57960, 58670, 57920, 58936, 57961, 56666, 48542, 58675, 57966, 58676, 
-            58940, 57967, 58941, 49409, 57970, 58678, 58942, 49433, 57973, 58679, 49549, 57975, 57981, 58690, 57990, 58691, 58011, 
-            58695, 50784, 58013, 58696, 58994, 58017, 58697, 58822, 9011043, 58983, 51632, 58022, 58698, 9011041, 51888, 58025, 
-            58699, 58828, 58035, 58827, 58043, 58702, 58714, 58047, 58048, 58049, 58718, 58050, 58719, 58051, 58720, 58929, 58721, 
-            58059, 58800, 58826, 58061, 58727, 58064, 9010452, 58972, 53171, 9010453, 53805, 58078, 9010532, 53856, 9010901, 54038, 
-            58080, 9010902, 54186, 58081, 9010903, 54194, 9010904, 54313, 9010908, 54569, 58094, 9010916, 54615, 58100, 9010917, 
-            58944, 54755, 58101, 58946, 58102, 9010918, 58945, 58103, 9010943, 58104, 58797, 55182, 58105, 55204, 58106, 58755, 
-            58770, 55212, 58109, 58771, 55239, 58127, 9010969, 55433, 58128, 58801, 55549, 58129, 9010971, 58223, 58075, 58131, 
-            57557, 58517, 56459, 58432, 57330, 58763, 57878, 57437, 57386, 52205, 58074, 53872, 58807, 57712, 58808, 57234, 57786, 
-            57286, 57588, 56654, 57680, 58224, 57901, 57895, 58383, 58674, 58677, 56821, 56873, 57396, 57580, 56930, 57235, 57395, 
-            57489, 57562, 56971, 57964, 58590, 57962, 57379, 49379, 57715, 58570, 58856, 58291, 58838, 57985, 58516, 58380, 58352, 
-            56432, 58344, 58090, 57091, 57120, 58355, 58393, 57117, 57466, 58378, 58379, 58381, 58390, 58394, 58396, 58055, 57514, 
-            57897, 57873, 56399, 58287, 57119, 58220, 58357, 57505, 58345, 58301, 57784, 58288, 57883, 58302, 58387, 58739, 57118, 
-            58289, 57875, 58740, 56932, 57464, 58348, 57907, 58222, 57377, 57578, 58219, 58400, 50628, 56868, 58401, 56929, 58193, 
-            58294, 58086, 57886, 57877, 57577, 58221, 58054, 58073, 57522, 58290, 58346, 58253, 49786, 57551, 58226, 58218, 57787, 
-            58747, 56650, 58594, 58766, 58540, 58753, 58754, 58508, 58842, 57882, 58286, 58398, 58811, 58578, 58595, 57202, 57318, 
-            56700, 57124, 57413, 57384, 57149, 57555, 56894, 57431, 54836, 57371, 57121, 58629, 56733, 57506, 56886, 57581, 57482, 
-            57512, 57579, 58637, 57838, 58638, 57187, 51179, 57684, 57836, 57837, 58607, 58645, 57871, 57874, 58644, 57232, 56878, 
-            57904, 58646, 57681, 57906, 57683, 58652, 57415, 57835, 57518, 58085, 58661, 57490, 57483, 57363, 56656, 57561, 56651, 
-            57868, 57188, 57689, 57902, 57394, 57590, 57687, 56931, 58087, 58089, 58558, 57908, 41556, 57583, 57589, 58821, 57885, 
-            58825, 57587, 57520, 58700, 58046, 57042, 58715, 58716, 56649, 58975, 9011038, 58036, 58722, 58823, 58225, 57192, 58817, 
-            58072, 58079, 57374, 58091, 56731, 56941, 57584, 57586, 57888, 56482, 57378, 56860, 57125, 57696, 58071, 57486, 58736, 
-            57591, 58070, 57834, 58068];  // Проверете дали сите бројки се правилно одделени со запирки
+ 
+<script>
+let selectedFiles = []; // 📌 Листа на селектирани документи
 
-
-        function toggleInventoryMode() {
-            const searchQuery = document.getElementById('searchQuery');
-            const errorMsg = document.getElementById('errorMsg');
-            inventoryMode = document.getElementById('inventoryCheck').checked;
-            searchQuery.value = '';
-            errorMsg.innerText = '';
-
-            if (inventoryMode) {
-                searchQuery.placeholder = "Внеси број за инвентарен број";
-            } else {
-                searchQuery.placeholder = "Внеси поим за пребарување";
-            }
-        }
-
-        function validateInput() {
-    const searchQuery = document.getElementById('searchQuery');
-    const errorMsg = document.getElementById('errorMsg');
-
-    if (inventoryMode) {
-        const regex = /^[0-9]*$/;
-        if (!regex.test(searchQuery.value)) {
-            errorMsg.innerText = "Може да внесувате само бројки за инвентарен број.";
-            searchQuery.value = searchQuery.value.replace(/[^0-9]/g, '');
-        } else {
-            errorMsg.innerText = '';
-        }
-    } else {
-        errorMsg.innerText = '';
-    }
-}
-
-function showHistory(column, value) {
-    console.log(`Барање историја за колона: ${column}, вредност: ${value}`);
-    const encodedValue = encodeURIComponent(value); // Кодирај ја вредноста
-    fetch(`/history?column=${column}&value=${encodedValue}`)
-        .then(response => response.json())
-        .then(historyData => {
-            if (historyData && historyData.length > 0) {
-                let historyContent = historyData.map(item => `
-                    <p><strong>Датум:</strong> ${new Date(item.modifiedTime).toLocaleString()}</p>
-                    <p><strong>${column}:</strong> ${item.value}</p>
-                `).join('');
-                document.getElementById('historyContent').innerHTML = historyContent;
-                document.getElementById('historyModal').style.display = 'flex';
-            } else {
-                document.getElementById('noHistoryModal').style.display = 'flex';
-            }
-        })
-        .catch(error => {
-            console.error('Грешка при добивање на историјата:', error);
-            document.getElementById('noHistoryModal').style.display = 'flex';
-        });
+// Функција за отворање на поп-ап прозорецот за администраторска најава
+function openAdminModal() {
+    document.getElementById("adminModal").style.display = "block";
 }
 
 
-
-
-
-const getLastCopiedFileData = (column, value) => {
-    return new Promise((resolve, reject) => {
-        fs.readdir(DESTINATION_FOLDER, (err, files) => {
-            if (err) {
-                return reject('Cannot access destination folder');
-            }
-
-            // Филтрирај ги фајловите за да ги игнорираме привремените и скриени фајлови
-            const filteredFiles = files.filter(file => !file.startsWith('~$') && !file.startsWith('.'));
-
-            if (filteredFiles.length === 0) {
-                return reject('No copied files found');
-            }
-
-            // Најди го најновиот фајл според времето на креирање/модификација
-            const latestFile = filteredFiles.reduce((latest, file) => {
-                const currentFile = path.join(DESTINATION_FOLDER, file);
-                const currentStat = fs.statSync(currentFile);
-
-                if (!latest || currentStat.mtime > latest.mtime) {
-                    return { fileName: file, mtime: currentStat.mtime, filePath: currentFile };
-                }
-
-                return latest;
-            }, null);
-
-            // Прочитај го најновиот фајл и спореди ги податоците
-            if (latestFile.fileName.endsWith('.csv')) {
-                const fileContent = fs.readFileSync(latestFile.filePath, 'utf8');
-                const parsedData = Papa.parse(fileContent, { header: true });
-
-                // Најди го редот кој се совпаѓа со вредноста
-                const matchedRow = parsedData.data.find(row => String(row[column]) === value);
-
-                if (matchedRow) {
-                    resolve(matchedRow[column]); // Врати ја вредноста од колоната
-                } else {
-                    reject('No matching row found');
-                }
-            } else if (latestFile.fileName.endsWith('.xlsx')) {
-                const workbook = xlsx.readFile(latestFile.filePath);
-                const sheetName = workbook.SheetNames[0];
-                const sheet = workbook.Sheets[sheetName];
-                const jsonData = xlsx.utils.sheet_to_json(sheet);
-
-                // Најди го редот кој се совпаѓа со вредноста
-                const matchedRow = jsonData.find(row => String(row[column]) === value);
-
-                if (matchedRow) {
-                    resolve(matchedRow[column]); // Врати ја вредноста од колоната
-                } else {
-                    reject('No matching row found');
-                }
-            } else {
-                reject('Unknown file type');
-            }
-        });
-    });
-};
-
-
-function closeHistoryModal() {
-    document.getElementById('historyModal').style.display = 'none';
-}
-
-function closeNoHistoryModal() {
-    document.getElementById('noHistoryModal').style.display = 'none';
-}
-
-
-
-
-        function showFactoryNumberModal() {
-    document.getElementById('factoryModal').style.display = 'flex';
-}
-
-
-
-        function closeFactoryNumberModal() {
-            document.getElementById('factoryModal').style.display = 'none';
-        }
-
-        function validateFactoryNumber() {
-            const factoryNumber = parseInt(document.getElementById('factoryNumber').value, 10);
-            const factoryError = document.getElementById('factoryError');
-
-            if (validFactoryNumbers.includes(factoryNumber)) {
-                factoryError.innerText = '';
-                searchFiles(); // Пребарувај податоци
-                closeFactoryNumberModal();
-            } else {
-                factoryError.innerText = 'Невалиден фабрички број!';
-            }
-        }
-
-        function showPasswordModal(editTable) {
-    currentEditableTable = editTable;
-    const factoryNumber = document.getElementById('factoryNumber').value; // земи го фабричкиот број или друг идентификатор
-
-    // Логирање на акцијата Edit
-    fetch('/log', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ factoryNumber: factoryNumber, action: 'Edit' })
-    });
-
-    document.getElementById('passwordModal').style.display = 'flex';
-}
-
-
-
-        function closePasswordModal() {
-            document.getElementById('passwordModal').style.display = 'none';
-        }
-
-        function validatePassword() {
-            const password = document.getElementById('password').value;
-            const passwordError = document.getElementById('passwordError');
-
-            if (password === '58764') {
-                passwordError.innerText = '';
-                enableEditing(currentEditableTable);
-                closePasswordModal();
-            } else {
-                passwordError.innerText = 'Погрешен пасворд!';
-            }
-        }
-
-        function enableEditing(table) {
-            const rows = table.querySelectorAll('td');
-            rows.forEach(cell => {
-                cell.contentEditable = 'true';
-            });
-            table.parentElement.querySelector('.save-btn').style.display = 'inline-block';
-            table.parentElement.querySelector('.cancel-btn').style.display = 'inline-block';
-        }
-
-        function saveChanges() {
-            const rows = currentEditableTable.querySelectorAll('td');
-            rows.forEach(cell => {
-                cell.contentEditable = 'false';
-            });
-            // Логика за зачувување на промените
-            alert('Changes saved!');
-            currentEditableTable.parentElement.querySelector('.save-btn').style.display = 'none';
-            currentEditableTable.parentElement.querySelector('.cancel-btn').style.display = 'none';
-        }
-
-        function cancelEditing() {
-            const rows = currentEditableTable.querySelectorAll('td');
-            rows.forEach(cell => {
-                cell.contentEditable = 'false';
-            });
-            currentEditableTable.parentElement.querySelector('.save-btn').style.display = 'none';
-            currentEditableTable.parentElement.querySelector('.cancel-btn').style.display = 'none';
-        }
-		
-		// Покажи Loading поп-ап порака
-function showLoadingPopup() {
-    const loadingPopup = document.getElementById('loadingPopup');
-    loadingPopup.style.display = 'flex';
-    startBlinking(); // Започни трепкање
-}
-
-// Сокриј Loading поп-ап порака
-function hideLoadingPopup() {
-    const loadingPopup = document.getElementById('loadingPopup');
-    loadingPopup.style.display = 'none';
-    stopBlinking(); // Запри трепкање
-}
-
-// Започни трепкање
-function startBlinking() {
-    const loadingText = document.getElementById('loadingText');
-    let isVisible = true;
-    loadingText.blinkInterval = setInterval(() => {
-        loadingText.style.visibility = isVisible ? 'hidden' : 'visible';
-        isVisible = !isVisible;
-    }, 500);
-}
-
-// Запри трепкање
-function stopBlinking() {
-    const loadingText = document.getElementById('loadingText');
-    clearInterval(loadingText.blinkInterval);
-    loadingText.style.visibility = 'visible';
-}
-
-// Покажи поп-ап за "Не се пронајдени записи"
-function showNoRecordsPopup() {
-    const noRecordsPopup = document.getElementById('noRecordsPopup');
-    noRecordsPopup.style.display = 'flex';
-}
-
-// Сокриј поп-ап за "Не се пронајдени записи"
-function closeNoRecordsPopup() {
-    const noRecordsPopup = document.getElementById('noRecordsPopup');
-    noRecordsPopup.style.display = 'none';
-}
-
-
-       function searchFiles() {
-    const query = document.getElementById('searchQuery').value;
-    if (query.length > 2 || (inventoryMode && query.length > 0)) {
-        showLoadingPopup(); // Прикажи Loading поп-ап порака
-        fetch('/search', {
+async function saveSingleChange(fileName, rowIndex, columnName, newValue) {
+    try {
+        const response = await fetch('/edit', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ query: query, inventoryMode: inventoryMode })
-        })
-        .then(response => response.json())
-        .then(data => {
-            hideLoadingPopup(); // Сокриј Loading поп-ап порака
-            if (data.length > 0) {
-                displayData(data); // Прикажи ги резултатите
-            } else {
-                showNoRecordsPopup(); // Прикажи поп-ап "Не се пронајдени записи"
-            }
-        })
-        .catch(error => {
-            hideLoadingPopup(); // Сокриј Loading поп-ап порака
-            console.error('Грешка при пребарување:', error);
-        });
-    }
-}
-
-
-        function displayData(data) {
-    const result = document.getElementById('result');
-    const printControls = document.getElementById('printControls');
-    const editControls = document.getElementById('editControls');
-    result.innerHTML = ''; // Исчисти го резултатот пред новото прикажување
-
-    // Мапа за следење на уникатни записи
-    const uniqueRecordsMap = {};
-
-    // Клучеви на колоните за табелата
-    let tableColumns = [];
-
-    // Прошетај низ сите податоци и обедини ги
-    data.forEach(item => {
-        if (item.data && item.data.length > 0) {
-            item.data.forEach(row => {
-                // Генерирај уникатен клуч за секој запис (во зависност од колоните)
-                const uniqueKey = JSON.stringify(row);
-
-                if (!uniqueRecordsMap[uniqueKey]) {
-                    uniqueRecordsMap[uniqueKey] = row;
-
-                    // Обнови ги клучевите на колоните (ако треба)
-                    tableColumns = [...new Set([...tableColumns, ...Object.keys(row)])];
-                }
-            });
-        }
-    });
-
-    if (Object.keys(uniqueRecordsMap).length > 0) {
-        // Постави ги копчињата за принтање и уредување да бидат видливи ако има податоци
-        printControls.style.display = 'flex';
-        editControls.style.display = 'block'; 
-    } else {
-        // Скриј ги копчињата ако нема податоци
-        printControls.style.display = 'none';
-        editControls.style.display = 'none'; 
-    }
-
-    // Групирај резултати по табели (пример: по некоја од колоните, тука користиме 'category' како пример)
-    let groupedResults = {};
-
-    // Групирај по категорија
-    Object.values(uniqueRecordsMap).forEach(row => {
-        const category = row.category || 'Без категорија'; // Или друга колона за групирање
-        if (!groupedResults[category]) {
-            groupedResults[category] = [];
-        }
-        groupedResults[category].push(row);
-    });
-
-    // Креирај табела за секоја група
-    let tableHtml = '';
-    for (const category in groupedResults) {
-        tableHtml += ``;
-
-        groupedResults[category].forEach(row => {
-            tableHtml += '<div style="margin-bottom: 15px; padding: 5px; border-bottom: 1px solid #ddd;">';
-            
-            // За секој запис прикажи вертикално: ред по ред за секоја колона
-            tableColumns.forEach(column => {
-                if (row[column]) { // Ако колоната има вредност
-                    tableHtml += `
-                        <div style="margin-bottom: 5px;">
-                            <strong>${column}</strong>: ${row[column]}
-                        </div>`;
-                }
-            });
-            tableHtml += '</div>';
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fileName, rowIndex, columnName, newValue, email: loggedInUser })
         });
 
-        tableHtml += '</div>';
-    }
-
-    result.innerHTML = tableHtml;
-}
-
-
-function enableEditing() {
-    const result = document.getElementById('result');
-    if (result) {
-        const rows = result.querySelectorAll('td');
-        rows.forEach(cell => {
-            cell.contentEditable = true;
-        });
-
-        // Прикажи ги копчињата за Save и Cancel кога е активиран Edit mode
-        document.querySelector('.save-btn').style.display = 'inline-block';
-        document.querySelector('.cancel-btn').style.display = 'inline-block';
-        document.getElementById('editButton').disabled = true; // Деактивирај го копчето за Edit за време на уредувањето
-    }
-}
-
-
-function saveChanges() {
-    const rows = document.querySelectorAll('#result td[contenteditable="true"]');
-    rows.forEach(cell => {
-        cell.contentEditable = false;
-    });
-
-    // Логика за зачувување на промените (оваа логика треба да биде заменета со вистинскиот код за зачувување)
-    alert('Промените се зачувани!');
-
-    // Сокриј ги копчињата за Save и Cancel
-    document.querySelector('.save-btn').style.display = 'none';
-    document.querySelector('.cancel-btn').style.display = 'none';
-    document.getElementById('editButton').disabled = false; // Активирај го копчето за Edit
-}
-
-function cancelEditing() {
-    const rows = document.querySelectorAll('#result td[contenteditable="true"]');
-    rows.forEach(cell => {
-        cell.contentEditable = false;
-    });
-
-    // Сокриј ги копчињата за Save и Cancel
-    document.querySelector('.save-btn').style.display = 'none';
-    document.querySelector('.cancel-btn').style.display = 'none';
-    document.getElementById('editButton').disabled = false; // Активирај го копчето за Edit
-}
-
-
-
-
-function printPage() {
-    const resultContainer = document.getElementById('result');
-    const printLogoContainer = document.getElementById('printLogoContainer');
-
-    // Постави го логото и резултатите да бидат видливи само при печатење
-    printLogoContainer.style.display = 'block';
-
-    // Генерирање на датум и време за именување на фајлот
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().slice(0, 10).replace(/-/g, '_');
-    const formattedTime = currentDate.toLocaleTimeString().replace(/:/g, '_');
-    const fileName = `Asset_List_${formattedDate}_${formattedTime}.pdf`;
-
-    // Генерирање на PDF
-    html2canvas(resultContainer, {
-        scale: 2, // Зголемување на резолуцијата
-    }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4'); // Измени го 'l' во 'p' за Portrait ориентација
-        pdf.setFontSize(20);
-        pdf.setTextColor(50, 52, 129); // Поставување на боја на текстот
-        pdf.addImage(imgData, 'PNG', 10, 40, 190, canvas.height * 190 / canvas.width); // Промени ја големината според потребите
-
-        // Проверка на формат на логото и правилно додавање
-        const logoImg = document.querySelector('.top-left-logo');
-        const logoImgSrc = logoImg.src;
-
-        // Проверка дали сликата е во правилен формат
-        const imageExtension = logoImgSrc.split('.').pop().toLowerCase();
-        if (imageExtension === 'jpeg' || imageExtension === 'jpg') {
-            pdf.addImage(logoImgSrc, 'JPEG', 10, 10, 50, 20);
-        } else if (imageExtension === 'png') {
-            pdf.addImage(logoImgSrc, 'PNG', 10, 10, 50, 20);
+        const result = await response.json();
+        if (result.success) {
+            alert('Промената е успешно зачувана!');
         } else {
-            console.error('Unsupported image format. Use JPEG or PNG.');
+            console.error("❌ Грешка при зачувување:", result.error);
+            alert('Грешка при зачувување');
         }
-
-        pdf.text('Asset List', 70, 20);
-
-        // Додавање на датум и време на генерирање
-        pdf.setFontSize(12);
-        pdf.text(`Generated on: ${currentDate.toLocaleString()}`, 200, 20);
-
-        // Сними го PDF фајлот
-        pdf.save(fileName);
-
-        // Врати ги на почетна состојба по печатењето
-        printLogoContainer.style.display = 'none';
-    }).catch(error => {
-        console.error('Error generating PDF:', error);
-    });
-}
-
-function showPasswordModal() {
-    document.getElementById('passwordModal').style.display = 'flex';
-}
-
-function closePasswordModal() {
-    document.getElementById('passwordModal').style.display = 'none';
-}
-
-function validatePassword() {
-    const password = document.getElementById('password').value;
-    const passwordError = document.getElementById('passwordError');
-
-    if (password === '58764') {
-        passwordError.innerText = '';
-        enableEditing(); // Активирање на режимот за уредување
-        closePasswordModal();
-    } else {
-        passwordError.innerText = 'Погрешен пасворд!';
+    } catch (error) {
+        console.error('❌ Грешка при зачувување:', error);
+        alert('Грешка при зачувување');
     }
 }
 
 
-		
- function refreshPage() {
-            location.reload(); // Освежување на тековната страница
+// Save the changes to the server
+async function saveChanges(event) {
+    event.preventDefault();  // Овде спречуваме стандардното однесување
+
+    // Преку getElementById или преку класата на модалот
+    const detailsContent = document.getElementById('detailsContent');
+    const inputs = detailsContent.querySelectorAll('input');
+
+    // Проверка дали се најдени input елементи
+    if (!inputs.length) {
+        alert("Нема внесени податоци!");
+        return;
+    }
+
+    const updatedData = {};
+    inputs.forEach(input => {
+        if (input.dataset.columnName) {  // Проверка дали има dataset атрибут
+            updatedData[input.dataset.columnName] = input.value;
+        }
+    });
+
+    const email = loggedInUser;
+
+    try {
+        const response = await fetch('/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ updatedData, email })  // Испрати ги новите податоци и корисничкиот email
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('Промените се зачувани!');
+            closeDetailsModal();  // Затвори го поп-апот ако е успешно
+        } else {
+            alert('Грешка при зачувување');
+        }
+    } catch (error) {
+        console.error('Грешка:', error);
+        alert('Грешка при зачувување');
+    }
+}
+
+
+
+async function showDetails(fileName) {
+    const query = document.getElementById('searchQuery').value;
+
+    try {
+        const response = await fetch(`/details?fileName=${encodeURIComponent(fileName)}&query=${encodeURIComponent(query)}`);
+        const report = await response.json();
+
+        const detailsModal = document.getElementById('detailsModal');
+        const detailsContent = document.getElementById('detailsContent');
+        detailsContent.innerHTML = '';
+
+        if (!report || report.data.length === 0) {
+            detailsContent.innerHTML = '<p>Нема податоци за овој запис.</p>';
+        } else {
+            report.data.forEach((row, rowIndex) => {
+                Object.keys(row).forEach((key) => {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.style.marginBottom = '10px';
+
+                    const label = document.createElement('label');
+                    label.textContent = `${key}: `;
+                    rowDiv.appendChild(label);
+
+                    const input = document.createElement('input');
+                    input.value = row[key];
+                    input.dataset.columnName = key;
+                    input.dataset.rowIndex = rowIndex;
+                    rowDiv.appendChild(input);
+
+                    // 📌 Копче за зачувување
+                    const saveBtn = document.createElement('button');
+                    saveBtn.textContent = 'Зачувај';
+                    saveBtn.className = 'button edit-btn';
+                    saveBtn.onclick = () => saveSingleChange(report.fileName, rowIndex, key, input.value);
+                    rowDiv.appendChild(saveBtn);
+
+                    // 📌 Копче за историја
+                    const historyBtn = document.createElement('button');
+                    historyBtn.textContent = 'Историја';
+                    historyBtn.className = 'button history-btn';
+                    historyBtn.onclick = () => showHistory(report.fileName, rowIndex, key);
+                    rowDiv.appendChild(historyBtn);
+
+                    detailsContent.appendChild(rowDiv);
+                });
+            });
         }
 
+        detailsModal.style.display = 'block';
+    } catch (error) {
+        console.error("❌ Грешка при прикажување на детали:", error);
+        alert("❌ Грешка при прикажување на детали!");
+    }
+}
 
 
 
-    </script>
+
+// Затвори го поп-ап прозорецот
+function closeDetailsModal() {
+    const detailsModal = document.getElementById('detailsModal');
+    detailsModal.style.display = 'none'; // Скриј го поп-ап прозорецот
+}
+
+
+
+        // Save the details as a PDF file
+        function saveToPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    const detailsContent = document.getElementById('detailsContent');
+
+    let y = 20; // Почетна Y позиција
+
+    // Поминување низ сите податоци и додавање на PDF
+    const content = detailsContent.querySelectorAll('div');
+    content.forEach((div) => {
+        const label = div.querySelector('label').textContent;
+        const value = div.querySelector('input').value; // Добивање на вредноста од input
+
+        pdf.text(`${label} ${value}`, 10, y);
+        y += 10; // Позиција за следниот ред
+
+        // Ако достигнеме до дното на страната, додај нова страница
+        if (y > 270) {
+            pdf.addPage();
+            y = 20; // Ресетирај ја Y позицијата
+        }
+    });
+
+    // Преземи PDF
+    const pdfBlob = pdf.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, '_blank');
+}
+
+
+let loggedInUser = null; // Чување на најавениот корисник
+
+// Функција за проверка на сесијата при лоад на страницата
+function checkLogin() {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+        console.log("✅ Корисникот е најавен:", user);
+        document.getElementById("loginModal").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+        document.getElementById("logoutBtn").style.display = "block"; // Прикажи го копчето за одјава
+        loggedInUser = user;
+    } else {
+        console.log("🔒 Корисникот не е најавен, прикажи поп-ап за најава.");
+        document.getElementById("loginModal").style.display = "flex";
+        document.getElementById("mainContent").style.display = "none";
+        document.getElementById("logoutBtn").style.display = "none"; // Скриј го копчето за одјава
+    }
+}
+
+
+window.onload = checkLogin;  // Повикај ја функцијата за проверка на сесија кога страницата се лоадира
+
+async function confirmLogin() {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+        document.getElementById("loginError").style.display = "block";
+        return;
+    }
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            console.log("✅ Успешна најава:", email);
+            loggedInUser = email;
+            localStorage.setItem("loggedInUser", email); // Чувај ја сесијата
+            document.getElementById("loginModal").style.display = "none"; // Скриј го поп-апот
+            document.getElementById("mainContent").style.display = "block"; // Покажи ја содржината
+        } else {
+            console.log("❌ Неуспешна најава:", data.message);
+            document.getElementById("loginError").style.display = "block";
+        }
+    } catch (error) {
+        console.error("❌ Грешка при најавување:", error);
+        document.getElementById("loginError").textContent = "❌ Грешка при најавување!";
+        document.getElementById("loginError").style.display = "block";
+    }
+}
+
+// Функција за пребарување
+// Ажурирана функција за пребарување
+
+
+    
+async function showHistory(fileName, rowIndex, columnName) {
+    try {
+        const response = await fetch(`/history?fileName=${encodeURIComponent(fileName)}&rowIndex=${rowIndex}&columnName=${encodeURIComponent(columnName)}`);
+        const historyData = await response.json();
+
+        // Ensure historyContainer exists
+        const historyContainer = document.getElementById("historyContainer");
+        if (!historyContainer) {
+            console.error("❌ Грешка: 'historyContainer' не постои! Проверете дали има <div id='historyContainer'> во HTML.");
+            return;
+        }
+
+        // Ensure historyContent exists before updating it
+        const historyContent = document.getElementById("historyContent");
+        if (!historyContent) {
+            console.error("❌ Грешка: 'historyContent' не постои! Проверете дали има <div id='historyContent'> во HTML.");
+            return;
+        }
+
+        // Handle case where there is no history data
+        if (historyData.length === 0) {
+            historyContent.innerHTML = "<p>Нема претходни измени за овој запис.</p>";
+        } else {
+            let historyHTML = "<ul>";
+            historyData.forEach(change => {
+                historyHTML += `<li>${change.timestamp} - ${change.modifiedBy}: ${change.oldValue} ➝ ${change.newValue}</li>`;
+            });
+            historyHTML += "</ul>";
+            historyContent.innerHTML = historyHTML;
+        }
+
+        historyContainer.style.display = "block"; // Ensure it is visible
+    } catch (error) {
+        console.error("❌ Грешка при добивање на историјата:", error);
+    }
+}
+
+
+// Функција за зачувување на промените
+async function saveChanges(event, rowIndex) {
+    event.preventDefault();
+    const form = event.target.form;
+    const newData = {};
+
+    Array.from(form.elements).forEach(input => {
+        if (input.value !== "") {
+            newData[input.dataset.column] = input.value;
+        }
+    });
+
+    try {
+        const response = await fetch('/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rowIndex, newData })
+        });
+
+        const result = await response.json();
+        alert(result.message);
+
+        if (result.success) {
+            // Повторно прикажи ги резултатите по промената
+            searchData();
+        }
+    } catch (error) {
+        console.error("❌ Грешка при зачувување на промените:", error);
+        alert("❌ Грешка при зачувување на промените!");
+    }
+}
+
+// Откажи едитирање
+function cancelEditing(event) {
+    const form = event.target.form;
+    document.body.removeChild(form);
+}
+
+
+function printTable(container) {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    pdf.setFontSize(12);
+    let y = 20;  // Y position for the content to be printed
+    
+    const rows = container.querySelectorAll('.record-container div.record'); // Select each record
+    
+    rows.forEach(row => {
+        let x = 10; // X position for the text
+        
+        const columns = row.querySelectorAll('div'); // Select each column in the row
+        columns.forEach((column, index) => {
+            const columnName = column.querySelector('span');
+            const inputValue = column.querySelector('input');
+
+            if (columnName && inputValue) {
+                // Write the column name and its value in the PDF
+                pdf.text(`${columnName.textContent}: ${inputValue.value}`, x, y);
+                y += 10; // Increase Y for the next line
+                
+                // If we're too far down the page, create a new page
+                if (y > 270) {
+                    pdf.addPage();
+                    y = 20; // Reset the Y position
+                }
+            }
+        });
+    });
+
+    // Open the PDF in a new window
+    const pdfBlob = pdf.output('blob');
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl, '_blank');
+}
+
+function logoutUser() {
+    localStorage.removeItem("loggedInUser"); // Избриши ја сесијата
+    loggedInUser = null;
+    document.getElementById("mainContent").style.display = "none"; // Скриј ја содржината
+    document.getElementById("loginModal").style.display = "flex"; // Прикажи ја формата за најава
+}
+
+// Отворање на поп-ап кога ќе се кликне на логото
+document.getElementById("logo").addEventListener("click", function() {
+    document.getElementById("adminModal").style.display = "block";
+});
+
+// Затворање на поп-ап
+function closeAdminModal() {
+    document.getElementById("adminModal").style.display = "none";
+}
+
+// Верификација на лозинка
+function verifyAdminPassword() {
+    const password = document.getElementById("adminPassword").value;
+    if (password === "AlkaloidAL01") {
+        document.getElementById("adminModal").style.display = "none";
+        document.getElementById("logsContainer").style.display = "block";
+        document.getElementById("exportLogsBtn").style.display = "block"; // Прикажи копче за извоз
+        document.getElementById("dateFilterContainer").style.display = "block"; // Прикажи филтер за датум
+        fetchLogs(); // Вчитување на логовите
+    } else {
+        document.getElementById("adminError").style.display = "block";
+    }
+}
+
+
+
+// Функција за вчитување логови во реално време
+async function fetchLogs() {
+    try {
+        const response = await fetch('/logs');
+        const logs = await response.json();
+
+        const selectedDate = document.getElementById("logDateFilter").value;
+        const logsTableBody = document.getElementById("logsTable").querySelector("tbody");
+        logsTableBody.innerHTML = "";
+
+        logs.forEach(log => {
+            const logDate = log.timestamp.split("T")[0]; // Извлекување на YYYY-MM-DD формат
+
+            if (!selectedDate || logDate === selectedDate) { // Филтрирање според избраниот датум
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${log.timestamp}</td>
+                    <td>${log.email}</td>
+                    <td>${log.action}</td>
+                    <td>${log.details}</td>
+                `;
+                logsTableBody.appendChild(row);
+            }
+        });
+    } catch (error) {
+        console.error("❌ Грешка при вчитување на логовите:", error);
+    }
+}
+
+
+function filterLogsByDate() {
+    fetchLogs(); // Освежување на табелата при промена на датум
+}
+
+
+//setInterval(fetchLogs, 5000);
+
+
+function exitAdminPanel() {
+    document.getElementById("logsContainer").style.display = "none"; // Скриј го Admin панелот
+    document.getElementById("mainContent").style.display = "block"; // Покажи ја главната содржина
+    document.getElementById("exportLogsBtn").style.display = "none"; // Скриј копче за извоз
+    document.getElementById("dateFilterContainer").style.display = "none"; // Скриј филтер за датум
+}
+
+
+
+function exportToExcel() {
+    let table = document.getElementById("logsTable");
+    let rows = table.rows;
+    let csvContent = "\uFEFF"; // Додавање BOM за да се прикаже правилно UTF-8
+
+    for (let i = 0; i < rows.length; i++) {
+        let rowData = [];
+        let cols = rows[i].cells;
+        
+        for (let j = 0; j < cols.length; j++) {
+            rowData.push('"' + cols[j].innerText + '"'); // Осигурување дека податоците се во наводници
+        }
+        
+        csvContent += rowData.join(",") + "\n";
+    }
+
+    let encodedUri = "data:text/csv;charset=utf-8," + encodeURIComponent(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "activity_logs.csv");
+    document.body.appendChild(link);
+    link.click();
+}
+
+
+function sortTable() {
+    let table = document.getElementById("logsTable");
+    let rows = Array.from(table.rows).slice(1); 
+    let sortedRows = rows.sort((rowA, rowB) => {
+        let dateA = new Date(rowA.cells[0].innerText);
+        let dateB = new Date(rowB.cells[0].innerText);
+        return dateB - dateA; 
+    });
+
+    let tbody = table.querySelector("tbody");
+    tbody.innerHTML = ""; 
+    sortedRows.forEach(row => tbody.appendChild(row)); 
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const historyContainer = document.getElementById("historyContainer");
+    if (!historyContainer) {
+        console.error("❌ Грешка: 'historyContainer' не е пронајден во DOM! Проверете дали постои <div id='historyContainer'> во HTML.");
+        return; // Stop execution if element is missing
+    }
+
+    const historyContent = document.getElementById("historyContent");
+    if (!historyContent) {
+        console.error("❌ Грешка: 'historyContent' не постои во HTML. Додајте <div id='historyContent'></div>.");
+        return;
+    }
+});
+
+
+const historyBtn = document.createElement('button');
+historyBtn.textContent = 'Историја';
+historyBtn.className = 'button history-btn';
+historyBtn.style.marginLeft = '10px';
+historyBtn.onclick = () => showDetails(report); // Повикај showDetails за да прикажеш податоци во поп-ап прозорецот
+
+async function openFilePopup() {
+    try {
+        const response = await fetch('/getFilesAndFolders');
+
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const fileListDiv = document.getElementById('fileList');
+        fileListDiv.innerHTML = ''; // Исчисти ги претходните податоци
+
+        // 📌 Прикажи ги подфолдерите
+        if (data.folders.length > 0) {
+            const folderHeader = document.createElement('h4');
+            folderHeader.textContent = "📂 Подфолдери:";
+            fileListDiv.appendChild(folderHeader);
+
+            data.folders.forEach(folder => {
+                const folderItem = document.createElement('div');
+                folderItem.textContent = `📁 ${folder}`;
+                folderItem.style.fontWeight = "bold";
+                fileListDiv.appendChild(folderItem);
+            });
+        }
+
+        // 📌 Прикажи ги документите со чекбоксови
+        if (data.files.length > 0) {
+            const fileHeader = document.createElement('h4');
+            fileHeader.textContent = "📄 Документи:";
+            fileListDiv.appendChild(fileHeader);
+
+            data.files.forEach(file => {
+                const fileItem = document.createElement('div');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = file;
+                checkbox.className = 'file-checkbox';
+
+                const label = document.createElement('label');
+                label.textContent = file;
+                label.style.marginLeft = '5px';
+
+                fileItem.appendChild(checkbox);
+                fileItem.appendChild(label);
+                fileListDiv.appendChild(fileItem);
+            });
+        }
+
+        // 📌 Прикажи го поп-ап прозорецот
+        document.getElementById('filePopup').style.display = 'block';
+    } catch (error) {
+        console.error("❌ Грешка при вчитување на листата на фајлови:", error);
+        alert("❌ Не може да се вчита листата на фајлови. Проверете дали серверот е активен.");
+    }
+}
+
+// 📌 Функција за затворање на поп-ап прозорецот
+function closePopup() {
+    document.getElementById('filePopup').style.display = 'none';
+}
+
+
+// 📌 Функција за затворање на поп-ап прозорецот
+function closePopup() {
+    document.getElementById('filePopup').style.display = 'none';
+}
+
+
+
+
+
+async function suggestFiles() {
+    const typeSearch = document.getElementById('typeSearch');
+    if (!typeSearch) {
+        console.error("❌ Грешка: 'typeSearch' не постои!");
+        return;
+    }
+
+    const input = typeSearch.value.toLowerCase();
+    const suggestionBox = document.getElementById('suggestionList');
+
+    if (input.length < 2) {
+        suggestionBox.style.display = 'none';
+        return;
+    }
+
+    try {
+        const response = await fetch('/getFiles');
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+
+        const files = await response.json();
+        const filteredFiles = files.filter(file => file.toLowerCase().includes(input));
+
+        suggestionBox.innerHTML = '';
+        if (filteredFiles.length === 0) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        filteredFiles.forEach(file => {
+            const suggestion = document.createElement('div');
+            suggestion.textContent = file;
+            suggestion.onclick = () => addSelectedFile(file);
+            suggestionBox.appendChild(suggestion);
+        });
+
+        suggestionBox.style.display = 'block';
+    } catch (error) {
+        console.error("❌ Грешка при вчитување на сугестии:", error);
+    }
+}
+
+
+// 📌 Додавање на селектиран документ во листата
+function addSelectedFile(fileName) {
+    if (!selectedFiles.includes(fileName)) {
+        selectedFiles.push(fileName);
+        updateSelectedFilesDisplay();
+    }
+    const typeSearch = document.getElementById('typeSearch');
+    if (typeSearch) typeSearch.value = ''; 
+    document.getElementById('suggestionList').style.display = 'none';
+}
+
+
+// 📌 Прикажување на селектираните документи
+function updateSelectedFilesDisplay() {
+    const selectedFilesDiv = document.getElementById('selectedFiles');
+    selectedFilesDiv.innerHTML = '';
+
+    console.log("📂 Селектирани документи:", selectedFiles); // Дебагирај ја вредноста
+
+    selectedFiles.forEach(fileName => {
+        const fileDiv = document.createElement('div');
+        fileDiv.className = 'selected-file';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'X';
+        removeBtn.onclick = () => removeSelectedFile(fileName);
+
+        const fileLabel = document.createElement('span');
+        fileLabel.textContent = fileName;
+
+        fileDiv.appendChild(removeBtn);
+        fileDiv.appendChild(fileLabel);
+        selectedFilesDiv.appendChild(fileDiv);
+    });
+}
+
+
+// 📌 Отстранување на селектиран документ
+function removeSelectedFile(fileName) {
+    selectedFiles = selectedFiles.filter(file => file !== fileName);
+    updateSelectedFilesDisplay();
+}
+
+// 📌 Користи ги селектираните документи при пребарување
+async function startSearch() {
+    if (!loggedInUser) {
+        alert("Мора да се најавите за да пребарувате!");
+        return;
+    }
+
+    const query = document.getElementById('searchQuery').value;
+    const resultsDiv = document.getElementById('results');
+
+    if (!Array.isArray(selectedFiles) || selectedFiles.length === 0) {
+        console.warn("⚠ Нема селектирани документи, пребарувам во сите!");
+    }
+
+    resultsDiv.innerHTML = '<p>Пребарувам...</p>'; // Прикажи порака за чекање
+
+    try {
+        const response = await fetch('/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, email: loggedInUser, selectedFiles })
+        });
+
+        const data = await response.json();
+        resultsDiv.innerHTML = ''; // Исчисти ги претходните податоци
+
+        if (data.length === 0) {
+            resultsDiv.innerHTML = '<p>Не се пронајдени резултати.</p>';
+        } else {
+            let tableHtml = `<table>
+                                <tr>
+                                    <th>Фајл</th>
+                                    <th>Детали</th>
+                                </tr>`;
+
+            data.forEach(report => {
+                tableHtml += `<tr>
+                                <td>${report.fileName}</td>
+                                <td><button class="button edit-btn" onclick="showDetails('${report.fileName}')">Детали</button></td>
+                              </tr>`;
+            });
+
+            tableHtml += `</table>`;
+            resultsDiv.innerHTML = tableHtml;
+        }
+    } catch (error) {
+        console.error("❌ Грешка при пребарување:", error);
+        alert("❌ Грешка при пребарување!");
+    }
+}
+
+
+
+</script>
+
 </body>
 </html>
