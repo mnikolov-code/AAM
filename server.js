@@ -233,7 +233,6 @@ app.get('/details', async (req, res) => {
         res.status(500).json({ error: "Error fetching details!" });
     }
 });
-db.changelogs.find().pretty()
 
 app.get('/history', async (req, res) => {
     try {
@@ -243,11 +242,12 @@ app.get('/history', async (req, res) => {
             return res.status(400).json({ error: "Недостасуваат параметри!" });
         }
 
+        // ✅ Правилно земи податоци од MongoDB
         const changes = await ChangeLog.find({ fileName, rowIndex, columnName }).sort({ timestamp: -1 });
 
         if (changes.length === 0) {
             console.log(`⚠️ Нема историја за ${fileName}, ред: ${rowIndex}, колона: ${columnName}`);
-            return res.json([]); // Врати празна листа наместо да не врати ништо
+            return res.json([]); // Врати празна листа наместо грешка
         }
 
         res.json(changes);
@@ -256,7 +256,6 @@ app.get('/history', async (req, res) => {
         res.status(500).json({ error: "Грешка при добивање на историјата." });
     }
 });
-
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
