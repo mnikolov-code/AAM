@@ -39,22 +39,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let lastKnownState = {};
 
 async function saveChangeLog(fileName, rowIndex, columnName, oldValue, newValue, email) {
-    const changeLog = new ChangeLog({
-        fileName,
-        rowIndex,
-        columnName,
-        oldValue,
-        newValue,
-        modifiedBy: email
-    });
-
     try {
+        const changeLog = new ChangeLog({
+            fileName,
+            rowIndex,
+            columnName,
+            oldValue,
+            newValue,
+            modifiedBy: email,
+            timestamp: new Date()
+        });
+
         await changeLog.save();
-        console.log("✅ Change saved to database!");
+        console.log(`✅ Промената зачувана во база: ${fileName} - ${columnName} (${oldValue} ➝ ${newValue})`);
     } catch (err) {
-        console.error("❌ Error saving log:", err);
+        console.error("❌ Грешка при зачувување на логот:", err);
     }
 }
+
 
 function watchFiles() {
     console.log(`👀 Started watching ${REPORTS_PATH} and subdirectories...`);
@@ -144,6 +146,63 @@ function checkCSVChanges(filePath, fileName) {
 }
 
 watchFiles();
+
+app.post('/edit', async (req, res) => {
+    try {
+        const { fileName, rowIndex, columnName, newValue, email } = req.body;
+
+        if (!fileName || rowIndex === undefined || !columnName || newValue === undefined || !email) {
+            return res.status(400).json({ error: "Недостасуваат податоци!" });
+        }
+
+        let filePath = path.join(REPORTS_PATH, fileName);
+
+        if (typeof filePath !== "string") {
+            console.error("❌ Грешка: filePath не е валидна текстуална низа!", filePath);
+            return res.status(500).json({ error: "Invalid file path" });
+        }
+
+        console.log("📁 File path:", filePath);
+        
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({ error: "Фајлот не постои!" });
+        }
+
+        const workbook = xlsx.readFile(filePath);
+        const sheetName = workbook.SheetNames[0];
+        let sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
+
+        if (!sheetData[rowIndex]) {
+            return res.status(400).json({ error: "Редицата не постои!" });
+        }
+
+        const oldValue = sheetData[rowIndex][columnName];
+        sheetData[rowIndex][columnName] = newValue;
+
+        // ✅ Зачувај ја промената во базата
+        await saveChangeLog(fileName, rowIndex, columnName, oldValue, newValue, email);
+
+        // ✅ Конвертирај во Excel и зачувај
+        const newSheet = xlsx.utils.json_to_sheet(sheetData);
+        workbook.Sheets[sheetName] = newSheet;
+
+        // 🛠 Поправка: Увери се дека `filePath` е валидна текстуална низа
+        if (typeof filePath === "string") {
+            xlsx.writeFile(filePath, workbook);
+            console.log(`✅ Excel фајлот успешно ажуриран: ${fileName}`);
+            res.json({ success: true, message: "Податоците се ажурирани!" });
+        } else {
+            console.error("❌ Грешка: filePath не е валидна текстуална низа!", filePath);
+            res.status(500).json({ error: "Invalid file path" });
+        }
+
+    } catch (error) {
+        console.error("❌ Грешка при зачувување на Excel:", error);
+        res.status(500).json({ error: "Грешка при зачувување на Excel фајлот!" });
+    }
+});
+
+
 
 function logActivity(email, action, details) {
     const timestamp = new Date().toISOString();
@@ -245,6 +304,8 @@ app.get('/history', async (req, res) => {
         // ✅ Правилно земи податоци од MongoDB
         const changes = await ChangeLog.find({ fileName, rowIndex, columnName }).sort({ timestamp: -1 });
 
+        console.log("📜 Вчитани промени:", changes);
+
         if (changes.length === 0) {
             console.log(`⚠️ Нема историја за ${fileName}, ред: ${rowIndex}, колона: ${columnName}`);
             return res.json([]); // Врати празна листа наместо грешка
@@ -257,19 +318,21 @@ app.get('/history', async (req, res) => {
     }
 });
 
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
     authenticateUser(email, password, (isAuthenticated) => {
         if (isAuthenticated) {
             logActivity(email, "Login", "Successful login");
-            return res.json({ message: "Logged in successfully!" });
+            return res.json({ success: true, message: "Успешна најава!" });
         } else {
             logActivity(email, "Login", "Failed login attempt");
-            return res.status(401).json({ message: "Authentication failed!" });
+            return res.status(401).json({ success: false, message: "Неуспешна автентикација!" });
         }
     });
 });
+
 
 let ldapDisabledLogged = false; // Додадено за да не се повторува логот
 
@@ -277,9 +340,16 @@ function authenticateUser(email, password, callback) {
     if (!isLocal) {
         if (!ldapDisabledLogged) {
             console.log("⚠️ Оневозможена LDAP автентикација за тестирање!");
-            ldapDisabledLogged = true; // Осигурува дека ова ќе се прикаже само еднаш
+            ldapDisabledLogged = true;
         }
-        callback(true);
+
+        // ✅ Дозволи фиксен тест корисник ако си надвор од мрежата
+        if (email === "mnikolov@alkaloid.com.mk" && password === "test1234") {
+            callback(true);
+            return;
+        }
+
+        callback(false);
         return;
     }
 
